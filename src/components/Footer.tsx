@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { Atom, Mail, Phone, MapPin, Facebook, Youtube, Instagram, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Atom, Mail, Phone, MapPin, Facebook, Youtube, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -74,27 +72,32 @@ const Footer = () => {
               المستويات
             </h4>
             <ul className="space-y-3">
-              {[
-                { label: "السنة الأولى ثانوي", href: "/level/1as-st" },
-                { label: "السنة الثانية - علوم تجريبية", href: "/level/2as-se" },
-                { label: "السنة الثانية - رياضيات", href: "/level/2as-mt" },
-                { label: "السنة الثالثة - علوم تجريبية", href: "/level/3as-se" },
-                { label: "السنة الثالثة - رياضيات", href: "/level/3as-mt" },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-primary-foreground/70 hover:text-physics-gold transition-colors flex items-center gap-2 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-physics-gold transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link to="/level/1as" className="text-primary-foreground/70 hover:text-physics-gold transition-colors flex items-center gap-2 group">
+                  <span className="w-0 group-hover:w-2 h-0.5 bg-physics-gold transition-all duration-300" />
+                  السنة الأولى ثانوي
+                </Link>
+              </li>
+              <li className="space-y-2">
+                <span className="text-primary-foreground/90 font-medium">السنة الثانية ثانوي</span>
+                <div className="pr-4 space-y-2">
+                  <Link to="/level/2as-se" className="block text-sm text-primary-foreground/60 hover:text-physics-gold transition-colors">علوم تجريبية</Link>
+                  <Link to="/level/2as-mt" className="block text-sm text-primary-foreground/60 hover:text-physics-gold transition-colors">رياضيات</Link>
+                  <Link to="/level/2as-tm" className="block text-sm text-primary-foreground/60 hover:text-physics-gold transition-colors">تقني رياضي</Link>
+                </div>
+              </li>
+              <li className="space-y-2">
+                <span className="text-primary-foreground/90 font-medium">السنة الثالثة ثانوي</span>
+                <div className="pr-4 space-y-2">
+                  <Link to="/level/3as-se" className="block text-sm text-primary-foreground/60 hover:text-physics-gold transition-colors">علوم تجريبية</Link>
+                  <Link to="/level/3as-mt" className="block text-sm text-primary-foreground/60 hover:text-physics-gold transition-colors">رياضيات</Link>
+                  <Link to="/level/3as-tm" className="block text-sm text-primary-foreground/60 hover:text-physics-gold transition-colors">تقني رياضي</Link>
+                </div>
+              </li>
             </ul>
           </div>
 
-          {/* Contact & Newsletter */}
+          {/* Contact */}
           <div>
             <h4 className="text-lg font-bold mb-6 flex items-center gap-2">
               <div className="w-1 h-6 bg-physics-blue rounded-full" />

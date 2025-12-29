@@ -3,33 +3,31 @@ import LevelCard from "./LevelCard";
 const levels = [
   {
     title: "السنة الأولى ثانوي",
-    description: "جذع مشترك علوم وتكنولوجيا - أساسيات الفيزياء والكيمياء",
-    href: "/level/1as-st",
+    description: "جذع مشترك علوم وتكنولوجيا - أساسيات الفيزياء والكيمياء للتعليم الثانوي",
+    href: "/level/1as",
     color: "blue" as const,
   },
   {
-    title: "السنة الثانية ثانوي - علوم تجريبية",
-    description: "شعبة العلوم التجريبية - الميكانيك والكهرباء",
-    href: "/level/2as-se",
+    title: "السنة الثانية ثانوي",
+    description: "دراسة معمقة للميكانيك والكهرباء والكيمياء حسب التخصص",
+    href: "/level/2as",
     color: "cyan" as const,
+    branches: [
+      { name: "علوم تجريبية", href: "/level/2as-se" },
+      { name: "رياضيات", href: "/level/2as-mt" },
+      { name: "تقني رياضي", href: "/level/2as-tm" },
+    ],
   },
   {
-    title: "السنة الثانية ثانوي - رياضيات وتقني",
-    description: "شعبة الرياضيات والتقني رياضي - فيزياء متقدمة",
-    href: "/level/2as-mt",
+    title: "السنة الثالثة ثانوي",
+    description: "تحضير شامل لامتحان البكالوريا مع مواضيع وحلول نموذجية",
+    href: "/level/3as",
     color: "gold" as const,
-  },
-  {
-    title: "السنة الثالثة ثانوي - علوم تجريبية",
-    description: "شعبة العلوم التجريبية - تحضير البكالوريا",
-    href: "/level/3as-se",
-    color: "blue" as const,
-  },
-  {
-    title: "السنة الثالثة ثانوي - رياضيات وتقني",
-    description: "شعبة الرياضيات والتقني رياضي - تحضير البكالوريا",
-    href: "/level/3as-mt",
-    color: "cyan" as const,
+    branches: [
+      { name: "علوم تجريبية", href: "/level/3as-se" },
+      { name: "رياضيات", href: "/level/3as-mt" },
+      { name: "تقني رياضي", href: "/level/3as-tm" },
+    ],
   },
 ];
 
@@ -51,12 +49,12 @@ const LevelsSection = () => {
         </div>
 
         {/* Levels Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {levels.map((level, index) => (
             <LevelCard
               key={level.href}
               {...level}
-              delay={index * 0.1}
+              delay={index * 0.15}
             />
           ))}
         </div>

@@ -8,6 +8,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 const navLinks = [
@@ -18,11 +22,26 @@ const navLinks = [
 ];
 
 const levels = [
-  { label: "السنة الأولى ثانوي", href: "/level/1as-st" },
-  { label: "السنة الثانية - علوم تجريبية", href: "/level/2as-se" },
-  { label: "السنة الثانية - رياضيات وتقني", href: "/level/2as-mt" },
-  { label: "السنة الثالثة - علوم تجريبية", href: "/level/3as-se" },
-  { label: "السنة الثالثة - رياضيات وتقني", href: "/level/3as-mt" },
+  {
+    label: "السنة الأولى ثانوي",
+    href: "/level/1as",
+  },
+  {
+    label: "السنة الثانية ثانوي",
+    branches: [
+      { label: "علوم تجريبية", href: "/level/2as-se" },
+      { label: "رياضيات", href: "/level/2as-mt" },
+      { label: "تقني رياضي", href: "/level/2as-tm" },
+    ],
+  },
+  {
+    label: "السنة الثالثة ثانوي",
+    branches: [
+      { label: "علوم تجريبية", href: "/level/3as-se" },
+      { label: "رياضيات", href: "/level/3as-mt" },
+      { label: "تقني رياضي", href: "/level/3as-tm" },
+    ],
+  },
 ];
 
 const Header = () => {
@@ -61,11 +80,31 @@ const Header = () => {
             ))}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground">المستويات<ChevronDown className="w-4 h-4" /></Button>
+                <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground">
+                  المستويات
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {levels.map((level) => (
-                  <DropdownMenuItem key={level.href} asChild><Link to={level.href}>{level.label}</Link></DropdownMenuItem>
+              <DropdownMenuContent align="end" className="w-56 bg-popover">
+                {levels.map((level, index) => (
+                  level.branches ? (
+                    <DropdownMenuSub key={index}>
+                      <DropdownMenuSubTrigger className="cursor-pointer">
+                        {level.label}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="bg-popover">
+                        {level.branches.map((branch) => (
+                          <DropdownMenuItem key={branch.href} asChild>
+                            <Link to={branch.href}>{branch.label}</Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  ) : (
+                    <DropdownMenuItem key={level.href} asChild>
+                      <Link to={level.href!}>{level.label}</Link>
+                    </DropdownMenuItem>
+                  )
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
@@ -80,7 +119,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[500px] pb-6" : "max-h-0"}`}>
+        <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[600px] pb-6" : "max-h-0"}`}>
           <div className="space-y-2 pt-4">
             {navLinks.map((link) => (
               <Link key={link.href} to={link.href} onClick={() => setIsOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive(link.href) ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>
@@ -89,8 +128,34 @@ const Header = () => {
             ))}
             <div className="border-t border-border/50 pt-4 mt-4">
               <p className="text-sm font-semibold text-foreground mb-3 px-4">المستويات الدراسية</p>
-              {levels.map((level) => (
-                <Link key={level.href} to={level.href} onClick={() => setIsOpen(false)} className="block px-4 py-2 text-muted-foreground hover:text-foreground">{level.label}</Link>
+              {levels.map((level, index) => (
+                <div key={index} className="mb-2">
+                  {level.branches ? (
+                    <>
+                      <p className="px-4 py-2 text-sm font-medium text-foreground">{level.label}</p>
+                      <div className="pr-8 space-y-1">
+                        {level.branches.map((branch) => (
+                          <Link
+                            key={branch.href}
+                            to={branch.href}
+                            onClick={() => setIsOpen(false)}
+                            className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            {branch.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      to={level.href!}
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {level.label}
+                    </Link>
+                  )}
+                </div>
               ))}
             </div>
           </div>
