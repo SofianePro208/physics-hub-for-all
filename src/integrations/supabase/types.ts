@@ -45,31 +45,37 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          exam_type: string | null
           id: string
           level_id: string
           pdf_url: string | null
           solution_pdf_url: string | null
           title: string
+          trimester: number | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           description?: string | null
+          exam_type?: string | null
           id?: string
           level_id: string
           pdf_url?: string | null
           solution_pdf_url?: string | null
           title: string
+          trimester?: number | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string | null
+          exam_type?: string | null
           id?: string
           level_id?: string
           pdf_url?: string | null
           solution_pdf_url?: string | null
           title?: string
+          trimester?: number | null
           updated_at?: string
         }
         Relationships: []
