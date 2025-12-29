@@ -9,7 +9,7 @@ import SEOHead from "@/components/SEOHead";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import ContentSkeleton from "@/components/ContentSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, Video, GraduationCap } from "lucide-react";
+import { BookOpen, FileText, Video, GraduationCap, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const levelData: Record<string, { title: string; description: string; matches: string[] }> = {
@@ -30,10 +30,17 @@ const levelData: Record<string, { title: string; description: string; matches: s
   },
 };
 
+const trimesters = [
+  { id: 1, name: "الفصل الأول" },
+  { id: 2, name: "الفصل الثاني" },
+  { id: 3, name: "الفصل الثالث" },
+];
+
 interface ContentItem {
   id: string;
   title: string;
   description: string | null;
+  trimester: number | null;
 }
 
 const LevelPage = () => {
@@ -45,6 +52,7 @@ const LevelPage = () => {
   const [exams, setExams] = useState<ContentItem[]>([]);
   const [videos, setVideos] = useState<ContentItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedTrimester, setSelectedTrimester] = useState("1");
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -53,17 +61,17 @@ const LevelPage = () => {
         const [lessonsRes, examsRes, videosRes] = await Promise.all([
           supabase
             .from("lessons")
-            .select("id, title, description")
+            .select("id, title, description, trimester")
             .in("level_id", matches)
             .order("created_at", { ascending: false }),
           supabase
             .from("exams")
-            .select("id, title, description")
+            .select("id, title, description, trimester")
             .in("level_id", matches)
             .order("created_at", { ascending: false }),
           supabase
             .from("videos")
-            .select("id, title, description")
+            .select("id, title, description, trimester")
             .in("level_id", matches)
             .order("created_at", { ascending: false }),
         ]);
@@ -80,6 +88,14 @@ const LevelPage = () => {
 
     fetchContent();
   }, [levelId, matches]);
+
+  const filterByTrimester = (items: ContentItem[], trimesterId: number) => {
+    return items.filter(item => (item.trimester || 1) === trimesterId);
+  };
+
+  const getFilteredLessons = () => filterByTrimester(lessons, parseInt(selectedTrimester));
+  const getFilteredExams = () => filterByTrimester(exams, parseInt(selectedTrimester));
+  const getFilteredVideos = () => filterByTrimester(videos, parseInt(selectedTrimester));
 
   const breadcrumbItems = [
     { label: level.title },
@@ -137,98 +153,122 @@ const LevelPage = () => {
             {isLoading ? (
               <ContentSkeleton type="card" count={6} />
             ) : (
-              <Tabs defaultValue="lessons" className="space-y-10">
-                <TabsList className="w-full max-w-lg mx-auto grid grid-cols-3 h-16 p-1.5 bg-muted/60 backdrop-blur-sm rounded-2xl border border-border/50">
-                  <TabsTrigger value="lessons" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
-                    <BookOpen className="w-5 h-5" />
-                    <span className="hidden sm:inline">الدروس</span>
-                    <span className="text-xs text-muted-foreground font-bold">({lessons.length})</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="exams" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
-                    <FileText className="w-5 h-5" />
-                    <span className="hidden sm:inline">الامتحانات</span>
-                    <span className="text-xs text-muted-foreground font-bold">({exams.length})</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="videos" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
-                    <Video className="w-5 h-5" />
-                    <span className="hidden sm:inline">الفيديوهات</span>
-                    <span className="text-xs text-muted-foreground font-bold">({videos.length})</span>
-                  </TabsTrigger>
-                </TabsList>
+              <div className="space-y-8">
+                {/* Trimester Tabs */}
+                <div className="flex justify-center">
+                  <div className="inline-flex items-center gap-2 p-1.5 bg-muted/60 backdrop-blur-sm rounded-2xl border border-border/50">
+                    {trimesters.map((trimester) => (
+                      <button
+                        key={trimester.id}
+                        onClick={() => setSelectedTrimester(trimester.id.toString())}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
+                          selectedTrimester === trimester.id.toString()
+                            ? "bg-primary text-primary-foreground shadow-md"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                        }`}
+                      >
+                        <Calendar className="w-4 h-4" />
+                        <span className="hidden sm:inline">{trimester.name}</span>
+                        <span className="sm:hidden">ف{trimester.id}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-                <TabsContent value="lessons" className="space-y-6">
-                  {lessons.length > 0 ? (
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {lessons.map((item, index) => (
-                        <ContentCard
-                          key={item.id}
-                          type="lesson"
-                          title={item.title}
-                          description={item.description || ""}
-                          level={level.title}
-                          href={`/content/lesson/${item.id}`}
-                          delay={index * 0.1}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-16">
-                      <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد دروس حالياً</h3>
-                      <p className="text-muted-foreground">سيتم إضافة الدروس قريباً</p>
-                    </div>
-                  )}
-                </TabsContent>
+                {/* Content Type Tabs */}
+                <Tabs defaultValue="lessons" className="space-y-10">
+                  <TabsList className="w-full max-w-lg mx-auto grid grid-cols-3 h-16 p-1.5 bg-muted/60 backdrop-blur-sm rounded-2xl border border-border/50">
+                    <TabsTrigger value="lessons" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                      <BookOpen className="w-5 h-5" />
+                      <span className="hidden sm:inline">الدروس</span>
+                      <span className="text-xs text-muted-foreground font-bold">({getFilteredLessons().length})</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="exams" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                      <FileText className="w-5 h-5" />
+                      <span className="hidden sm:inline">الامتحانات</span>
+                      <span className="text-xs text-muted-foreground font-bold">({getFilteredExams().length})</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="videos" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                      <Video className="w-5 h-5" />
+                      <span className="hidden sm:inline">الفيديوهات</span>
+                      <span className="text-xs text-muted-foreground font-bold">({getFilteredVideos().length})</span>
+                    </TabsTrigger>
+                  </TabsList>
 
-                <TabsContent value="exams" className="space-y-6">
-                  {exams.length > 0 ? (
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {exams.map((item, index) => (
-                        <ContentCard
-                          key={item.id}
-                          type="exam"
-                          title={item.title}
-                          description={item.description || ""}
-                          level={level.title}
-                          href={`/content/exam/${item.id}`}
-                          downloadUrl="#"
-                          delay={index * 0.1}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-16">
-                      <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد امتحانات حالياً</h3>
-                      <p className="text-muted-foreground">سيتم إضافة الامتحانات قريباً</p>
-                    </div>
-                  )}
-                </TabsContent>
+                  <TabsContent value="lessons" className="space-y-6">
+                    {getFilteredLessons().length > 0 ? (
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredLessons().map((item, index) => (
+                          <ContentCard
+                            key={item.id}
+                            type="lesson"
+                            title={item.title}
+                            description={item.description || ""}
+                            level={level.title}
+                            href={`/content/lesson/${item.id}`}
+                            delay={index * 0.1}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-16">
+                        <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد دروس في هذا الفصل</h3>
+                        <p className="text-muted-foreground">جرب اختيار فصل آخر</p>
+                      </div>
+                    )}
+                  </TabsContent>
 
-                <TabsContent value="videos" className="space-y-6">
-                  {videos.length > 0 ? (
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {videos.map((item, index) => (
-                        <ContentCard
-                          key={item.id}
-                          type="video"
-                          title={item.title}
-                          description={item.description || ""}
-                          level={level.title}
-                          href={`/content/video/${item.id}`}
-                          delay={index * 0.1}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-16">
-                      <Video className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد فيديوهات حالياً</h3>
-                      <p className="text-muted-foreground">سيتم إضافة الفيديوهات قريباً</p>
-                    </div>
-                  )}
-                </TabsContent>
-              </Tabs>
+                  <TabsContent value="exams" className="space-y-6">
+                    {getFilteredExams().length > 0 ? (
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredExams().map((item, index) => (
+                          <ContentCard
+                            key={item.id}
+                            type="exam"
+                            title={item.title}
+                            description={item.description || ""}
+                            level={level.title}
+                            href={`/content/exam/${item.id}`}
+                            downloadUrl="#"
+                            delay={index * 0.1}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-16">
+                        <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد امتحانات في هذا الفصل</h3>
+                        <p className="text-muted-foreground">جرب اختيار فصل آخر</p>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="videos" className="space-y-6">
+                    {getFilteredVideos().length > 0 ? (
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredVideos().map((item, index) => (
+                          <ContentCard
+                            key={item.id}
+                            type="video"
+                            title={item.title}
+                            description={item.description || ""}
+                            level={level.title}
+                            href={`/content/video/${item.id}`}
+                            delay={index * 0.1}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-16">
+                        <Video className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد فيديوهات في هذا الفصل</h3>
+                        <p className="text-muted-foreground">جرب اختيار فصل آخر</p>
+                      </div>
+                    )}
+                  </TabsContent>
+                </Tabs>
+              </div>
             )}
           </div>
         </section>
