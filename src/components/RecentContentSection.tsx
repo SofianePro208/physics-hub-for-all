@@ -154,12 +154,7 @@ const RecentContentSection = () => {
           {content.map((item, index) => {
             const config = typeConfig[item.type];
             const Icon = config.icon;
-            const href =
-              item.type === "lesson"
-                ? "/lessons"
-                : item.type === "exam"
-                ? "/exams"
-                : "/videos";
+            const href = `/content/${item.type}/${item.id}`;
 
             return (
               <Card
@@ -200,7 +195,7 @@ const RecentContentSection = () => {
                       to={href}
                       className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                     >
-                      عرض الكل
+                      عرض المحتوى
                       <ArrowLeft className="w-3 h-3" />
                     </Link>
                   </div>
