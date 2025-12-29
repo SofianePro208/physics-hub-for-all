@@ -11,6 +11,7 @@ import ContentSkeleton from "@/components/ContentSkeleton";
 import AdminMessagesTab from "@/components/admin/AdminMessagesTab";
 import AdminContentTab from "@/components/admin/AdminContentTab";
 import AdminContentForm from "@/components/admin/AdminContentForm";
+import AdminStatsCards from "@/components/admin/AdminStatsCards";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -107,6 +108,8 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Stats Cards */}
+        <AdminStatsCards />
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <TabsList className="grid grid-cols-4 h-12">
