@@ -23,17 +23,20 @@ const typeConfig = {
   lesson: {
     icon: BookOpen,
     label: "درس",
-    color: "bg-physics-blue/10 text-physics-blue",
+    color: "bg-physics-blue/10 text-physics-blue border-physics-blue/20",
+    iconBg: "from-physics-blue to-physics-purple",
   },
   exam: {
     icon: FileText,
     label: "امتحان",
-    color: "bg-physics-gold/10 text-physics-gold",
+    color: "bg-physics-gold/10 text-physics-gold border-physics-gold/20",
+    iconBg: "from-physics-gold to-physics-cyan",
   },
   video: {
     icon: Video,
     label: "فيديو",
-    color: "bg-physics-cyan/10 text-physics-cyan",
+    color: "bg-physics-cyan/10 text-physics-cyan border-physics-cyan/20",
+    iconBg: "from-physics-cyan to-physics-blue",
   },
 };
 
@@ -84,23 +87,23 @@ const ContentCard = ({ type, title, description, level, href, downloadUrl, delay
 
   return (
     <div
-      className="group bg-card rounded-2xl border border-border/50 overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 animate-fade-in"
+      className="group bg-card rounded-2xl border-2 border-border/40 overflow-hidden shadow-md hover:shadow-xl transition-all duration-400 hover:-translate-y-2 animate-fade-in"
       style={{ animationDelay: `${delay}s` }}
     >
       {/* Header */}
-      <div className="p-6 border-b border-border/50">
+      <div className="p-6 border-b border-border/30">
         <div className="flex items-start justify-between gap-4">
-          <div className={`w-12 h-12 rounded-xl ${config.color} flex items-center justify-center shrink-0`}>
-            <config.icon className="w-6 h-6" />
+          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${config.iconBg} flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+            <config.icon className="w-7 h-7 text-primary-foreground" />
           </div>
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${config.color}`}>
+          <span className={`px-4 py-1.5 rounded-full text-xs font-bold border ${config.color}`}>
             {config.label}
           </span>
         </div>
-        <h3 className="text-lg font-bold text-foreground mt-4 group-hover:text-primary transition-colors">
+        <h3 className="text-lg font-bold text-foreground mt-5 group-hover:text-primary transition-colors duration-300">
           {title}
         </h3>
-        <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+        <p className="text-sm text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
           {description}
         </p>
       </div>

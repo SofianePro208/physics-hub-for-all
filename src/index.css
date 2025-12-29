@@ -6,110 +6,117 @@
 
 @layer base {
   :root {
-    /* Scientific Blue Theme - Enhanced */
-    --background: 220 25% 97%;
-    --foreground: 220 50% 10%;
+    /* Scientific Blue Theme - Premium */
+    --background: 210 30% 98%;
+    --foreground: 220 50% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 50% 10%;
+    --card-foreground: 220 50% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 50% 10%;
+    --popover-foreground: 220 50% 12%;
 
-    --primary: 210 100% 45%;
+    --primary: 205 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 180 65% 42%;
+    --secondary: 175 70% 38%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 20% 92%;
-    --muted-foreground: 220 15% 45%;
+    --muted: 210 25% 93%;
+    --muted-foreground: 215 20% 50%;
 
-    --accent: 38 100% 55%;
+    --accent: 35 100% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 88%;
-    --input: 220 20% 88%;
-    --ring: 210 100% 45%;
+    --border: 210 25% 90%;
+    --input: 210 25% 90%;
+    --ring: 205 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    /* Custom Physics Colors */
-    --physics-dark: 220 60% 12%;
-    --physics-blue: 210 100% 45%;
-    --physics-cyan: 180 75% 42%;
-    --physics-gold: 38 100% 55%;
-    --physics-light: 200 40% 96%;
-    --physics-purple: 260 80% 60%;
+    /* Premium Physics Colors */
+    --physics-dark: 220 55% 10%;
+    --physics-blue: 205 100% 50%;
+    --physics-cyan: 175 80% 40%;
+    --physics-gold: 35 100% 55%;
+    --physics-light: 205 40% 97%;
+    --physics-purple: 255 85% 65%;
+    --physics-emerald: 160 75% 45%;
     
-    /* Enhanced Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 60% 12%) 0%, hsl(210 100% 20%) 40%, hsl(180 70% 30%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 25% 97%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(180 75% 42%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(38 100% 55%) 0%, hsl(45 100% 60%) 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    /* Premium Gradients */
+    --gradient-hero: linear-gradient(145deg, hsl(220 55% 8%) 0%, hsl(205 80% 18%) 35%, hsl(175 65% 28%) 70%, hsl(160 55% 35%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 30% 98%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(205 100% 50%) 0%, hsl(175 80% 40%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(35 100% 55%) 0%, hsl(45 100% 62%) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(205 100% 50%) 0%, hsl(255 85% 65%) 50%, hsl(175 80% 40%) 100%);
 
-    /* Enhanced Shadows */
-    --shadow-sm: 0 2px 8px -2px hsl(220 60% 12% / 0.08);
-    --shadow-md: 0 8px 24px -8px hsl(220 60% 12% / 0.12);
-    --shadow-lg: 0 16px 48px -16px hsl(220 60% 12% / 0.18);
-    --shadow-xl: 0 24px 64px -24px hsl(220 60% 12% / 0.25);
-    --shadow-glow: 0 0 40px hsl(180 75% 42% / 0.35);
-    --shadow-glow-gold: 0 0 40px hsl(38 100% 55% / 0.35);
+    /* Premium Shadows */
+    --shadow-sm: 0 2px 8px -2px hsl(220 55% 10% / 0.06);
+    --shadow-md: 0 8px 24px -6px hsl(220 55% 10% / 0.1);
+    --shadow-lg: 0 16px 40px -12px hsl(220 55% 10% / 0.15);
+    --shadow-xl: 0 24px 60px -16px hsl(220 55% 10% / 0.2);
+    --shadow-glow: 0 0 50px hsl(175 80% 40% / 0.3);
+    --shadow-glow-gold: 0 0 50px hsl(35 100% 55% / 0.3);
+    --shadow-glow-blue: 0 0 50px hsl(205 100% 50% / 0.3);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 220 50% 20%;
+    --sidebar-primary: 205 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 25% 96%;
+    --sidebar-accent-foreground: 220 50% 15%;
+    --sidebar-border: 210 25% 92%;
+    --sidebar-ring: 205 100% 50%;
   }
 
   .dark {
-    --background: 220 50% 6%;
-    --foreground: 210 40% 98%;
+    --background: 220 45% 5%;
+    --foreground: 210 30% 96%;
 
-    --card: 220 45% 10%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 40% 8%;
+    --card-foreground: 210 30% 96%;
 
-    --popover: 220 45% 10%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 40% 8%;
+    --popover-foreground: 210 30% 96%;
 
-    --primary: 200 100% 55%;
-    --primary-foreground: 220 50% 10%;
+    --primary: 200 100% 60%;
+    --primary-foreground: 220 50% 8%;
 
-    --secondary: 180 60% 40%;
+    --secondary: 175 65% 45%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 40% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 35% 12%;
+    --muted-foreground: 215 25% 60%;
 
-    --accent: 38 100% 55%;
-    --accent-foreground: 220 50% 10%;
+    --accent: 35 100% 58%;
+    --accent-foreground: 220 50% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 40% 18%;
-    --input: 220 40% 18%;
-    --ring: 200 100% 55%;
+    --border: 220 35% 15%;
+    --input: 220 35% 15%;
+    --ring: 200 100% 60%;
 
-    --physics-dark: 220 50% 6%;
-    --physics-light: 220 45% 12%;
+    --physics-dark: 220 45% 5%;
+    --physics-light: 220 40% 10%;
+    --physics-emerald: 160 70% 50%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Dark mode premium gradients */
+    --gradient-hero: linear-gradient(145deg, hsl(220 45% 4%) 0%, hsl(205 70% 12%) 35%, hsl(175 55% 18%) 70%, hsl(160 45% 22%) 100%);
+
+    --sidebar-background: 220 45% 6%;
+    --sidebar-foreground: 210 30% 94%;
+    --sidebar-primary: 200 100% 60%;
+    --sidebar-primary-foreground: 220 50% 8%;
+    --sidebar-accent: 220 35% 12%;
+    --sidebar-accent-foreground: 210 30% 94%;
+    --sidebar-border: 220 35% 15%;
+    --sidebar-ring: 200 100% 60%;
   }
 }
 
