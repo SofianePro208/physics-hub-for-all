@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -6,162 +7,82 @@ import SharePrintButtons from "@/components/SharePrintButtons";
 import ContentCard from "@/components/ContentCard";
 import SEOHead from "@/components/SEOHead";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import ContentSkeleton from "@/components/ContentSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, GraduationCap } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const levelData: Record<string, { title: string; year: string; branch: string; description: string }> = {
+const levelData: Record<string, { title: string; description: string; matches: string[] }> = {
   "1as": {
     title: "السنة الأولى ثانوي",
-    year: "السنة الأولى",
-    branch: "جذع مشترك علوم وتكنولوجيا",
     description: "أساسيات الفيزياء والكيمياء للتعليم الثانوي",
+    matches: ["1as", "1as-st"],
   },
-  "2as-se": {
-    title: "السنة الثانية ثانوي - علوم تجريبية",
-    year: "السنة الثانية",
-    branch: "شعبة العلوم التجريبية",
+  "2as": {
+    title: "السنة الثانية ثانوي",
     description: "دراسة معمقة للميكانيك والكهرباء والكيمياء",
+    matches: ["2as", "2as-se", "2as-mt", "2as-tm"],
   },
-  "2as-mt": {
-    title: "السنة الثانية ثانوي - رياضيات وتقني رياضي",
-    year: "السنة الثانية",
-    branch: "شعبة الرياضيات والتقني رياضي",
-    description: "فيزياء متقدمة لشعبة الرياضيات والتقني رياضي",
-  },
-  "3as-se": {
-    title: "السنة الثالثة ثانوي - علوم تجريبية",
-    year: "السنة الثالثة",
-    branch: "شعبة العلوم التجريبية",
-    description: "تحضير شامل لبكالوريا العلوم التجريبية",
-  },
-  "3as-mt": {
-    title: "السنة الثالثة ثانوي - رياضيات وتقني رياضي",
-    year: "السنة الثالثة",
-    branch: "شعبة الرياضيات والتقني رياضي",
-    description: "تحضير شامل لبكالوريا الرياضيات والتقني رياضي",
+  "3as": {
+    title: "السنة الثالثة ثانوي",
+    description: "تحضير شامل لامتحان البكالوريا مع مواضيع وحلول نموذجية",
+    matches: ["3as", "3as-se", "3as-mt", "3as-tm"],
   },
 };
 
-const contentData: Record<string, { lessons: any[]; exams: any[]; videos: any[] }> = {
-  "1as": {
-    lessons: [
-      { id: 1, title: "الحركة والسكون", description: "دراسة المرجع والمعلم في الفيزياء" },
-      { id: 2, title: "السرعة المتوسطة واللحظية", description: "حساب السرعة في الحركات المختلفة" },
-      { id: 3, title: "القوة والحركة", description: "العلاقة بين القوة والتسارع" },
-      { id: 4, title: "بنية المادة", description: "الذرة والجزيئات والروابط الكيميائية" },
-    ],
-    exams: [
-      { id: 1, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول" },
-      { id: 2, title: "اختبار الفصل الأول", description: "الاختبار الفصلي مع الحل" },
-      { id: 3, title: "فرض الفصل الثاني", description: "امتحان شامل للفصل الثاني" },
-    ],
-    videos: [
-      { id: 1, title: "شرح الحركة المستقيمة", description: "فيديو تعليمي مفصل عن الحركة" },
-      { id: 2, title: "تجربة سقوط الأجسام", description: "تجربة عملية مع الشرح" },
-    ],
-  },
-  "2as-se": {
-    lessons: [
-      { id: 1, title: "القوى والتوازن", description: "شروط توازن جسم صلب خاضع لقوتين" },
-      { id: 2, title: "العمل والطاقة", description: "العمل الميكانيكي والطاقة الحركية" },
-      { id: 3, title: "كمية الحركة", description: "انحفاظ كمية الحركة" },
-    ],
-    exams: [
-      { id: 1, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول" },
-      { id: 2, title: "اختبار الفصل الثاني", description: "الاختبار الفصلي مع الحل" },
-    ],
-    videos: [
-      { id: 1, title: "حل تمارين التوازن", description: "تمارين محلولة عن التوازن" },
-      { id: 2, title: "شرح العمل والطاقة", description: "مفهوم الشغل والطاقة الحركية" },
-    ],
-  },
-  "2as-mt": {
-    lessons: [
-      { id: 1, title: "الطاقة الحركية والكامنة", description: "أشكال الطاقة وتحولاتها" },
-      { id: 2, title: "كمية الحركة", description: "انحفاظ كمية الحركة والتصادمات" },
-      { id: 3, title: "الحركة الدورانية", description: "دراسة حركة الأجسام الصلبة" },
-    ],
-    exams: [
-      { id: 1, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول" },
-      { id: 2, title: "اختبار الفصل الثالث", description: "الاختبار النهائي مع الحل" },
-    ],
-    videos: [
-      { id: 1, title: "حل تمارين الميكانيك", description: "حل تطبيقي لتمارين متنوعة" },
-      { id: 2, title: "شرح كمية الحركة", description: "انحفاظ كمية الحركة" },
-    ],
-  },
-  "2as-tm": {
-    lessons: [
-      { id: 1, title: "الطاقة الحركية والكامنة", description: "أشكال الطاقة وتحولاتها" },
-      { id: 2, title: "الدارات الكهربائية", description: "تحليل الدارات الكهربائية" },
-    ],
-    exams: [
-      { id: 1, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول" },
-    ],
-    videos: [
-      { id: 1, title: "شرح الدارات الكهربائية", description: "تحليل الدارات" },
-    ],
-  },
-  "3as-se": {
-    lessons: [
-      { id: 1, title: "الظواهر الكهربائية", description: "الدارات الكهربائية والقوانين الأساسية" },
-      { id: 2, title: "تطور جملة كيميائية", description: "التحولات الكيميائية والتقدم" },
-      { id: 3, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها" },
-    ],
-    exams: [
-      { id: 1, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول" },
-      { id: 2, title: "بكالوريا تجريبي", description: "امتحان بكالوريا تجريبي مع التصحيح" },
-      { id: 3, title: "بكالوريا 2023", description: "موضوع بكالوريا 2023 مع الحل" },
-    ],
-    videos: [
-      { id: 1, title: "شرح الظواهر الكهربائية", description: "الدارات الكهربائية بالتفصيل" },
-      { id: 2, title: "شرح التفاعلات الكيميائية", description: "تطور جملة كيميائية" },
-    ],
-  },
-  "3as-mt": {
-    lessons: [
-      { id: 1, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها" },
-      { id: 2, title: "الموجات الكهرومغناطيسية", description: "الضوء والظواهر الموجية" },
-      { id: 3, title: "النشاط الإشعاعي", description: "التحلل الإشعاعي وقوانينه" },
-    ],
-    exams: [
-      { id: 1, title: "بكالوريا 2022", description: "موضوع بكالوريا 2022 مع الحل" },
-      { id: 2, title: "بكالوريا 2023", description: "موضوع بكالوريا 2023 مع الحل" },
-      { id: 3, title: "سلسلة تمارين الميكانيك", description: "تمارين متنوعة في الميكانيك" },
-    ],
-    videos: [
-      { id: 1, title: "تصحيح بكالوريا 2023", description: "حل موضوع بكالوريا كامل" },
-      { id: 2, title: "شرح الموجات الميكانيكية", description: "انتشار الموجات وخصائصها" },
-    ],
-  },
-  "3as-tm": {
-    lessons: [
-      { id: 1, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها" },
-      { id: 2, title: "الدارات الكهربائية", description: "تحليل الدارات RLC" },
-    ],
-    exams: [
-      { id: 1, title: "بكالوريا 2023", description: "موضوع بكالوريا 2023 مع الحل" },
-    ],
-    videos: [
-      { id: 1, title: "شرح الدارات RLC", description: "تحليل دارات التيار المتناوب" },
-    ],
-  },
-};
+interface ContentItem {
+  id: string;
+  title: string;
+  description: string | null;
+}
 
 const LevelPage = () => {
   const { levelId } = useParams();
   const level = levelData[levelId || ""] || levelData["1as"];
-  const content = contentData[levelId || ""] || contentData["1as"];
+  const matches = level.matches;
 
-  // Get sibling branches for the current year
-  const currentYear = levelId?.split("-")[0];
-  const siblingBranches = Object.entries(levelData)
-    .filter(([id]) => id.startsWith(currentYear || "") && id !== levelId)
-    .map(([id, data]) => ({ id, ...data }));
+  const [lessons, setLessons] = useState<ContentItem[]>([]);
+  const [exams, setExams] = useState<ContentItem[]>([]);
+  const [videos, setVideos] = useState<ContentItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      setIsLoading(true);
+      try {
+        const [lessonsRes, examsRes, videosRes] = await Promise.all([
+          supabase
+            .from("lessons")
+            .select("id, title, description")
+            .in("level_id", matches)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("exams")
+            .select("id, title, description")
+            .in("level_id", matches)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("videos")
+            .select("id, title, description")
+            .in("level_id", matches)
+            .order("created_at", { ascending: false }),
+        ]);
+
+        setLessons(lessonsRes.data || []);
+        setExams(examsRes.data || []);
+        setVideos(videosRes.data || []);
+      } catch (error) {
+        console.error("Error fetching content:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, [levelId, matches]);
 
   const breadcrumbItems = [
-    { label: level.year, href: "/" },
-    { label: level.branch || level.title },
+    { label: level.title },
   ];
 
   return (
@@ -169,7 +90,7 @@ const LevelPage = () => {
       <SEOHead
         title={level.title}
         description={`${level.description}. دروس، امتحانات، وفيديوهات تعليمية في الفيزياء والكيمياء.`}
-        keywords={`${level.title}, فيزياء, كيمياء, دروس, امتحانات, ${level.branch}, الجزائر`}
+        keywords={`${level.title}, فيزياء, كيمياء, دروس, امتحانات, الجزائر`}
       />
       <Header />
       
@@ -203,25 +124,9 @@ const LevelPage = () => {
               <h1 className="text-3xl lg:text-5xl font-extrabold text-primary-foreground mb-5">
                 {level.title}
               </h1>
-              <p className="text-xl text-primary-foreground/85 mb-8 leading-relaxed">
+              <p className="text-xl text-primary-foreground/85 leading-relaxed">
                 {level.description}
               </p>
-
-              {/* Sibling Branches */}
-              {siblingBranches.length > 0 && (
-                <div className="flex flex-wrap gap-3 items-center">
-                  <span className="text-primary-foreground/70 text-sm font-medium">الشعب الأخرى:</span>
-                  {siblingBranches.map((branch) => (
-                    <Link
-                      key={branch.id}
-                      to={`/level/${branch.id}`}
-                      className="px-5 py-2.5 rounded-xl bg-primary-foreground/10 text-primary-foreground text-sm font-medium hover:bg-primary-foreground/20 transition-all duration-300 border border-primary-foreground/20 hover:border-primary-foreground/40"
-                    >
-                      {branch.branch}
-                    </Link>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </section>
@@ -229,74 +134,102 @@ const LevelPage = () => {
         {/* Content Section */}
         <section className="py-14 lg:py-24">
           <div className="container mx-auto px-4">
-            <Tabs defaultValue="lessons" className="space-y-10">
-              <TabsList className="w-full max-w-lg mx-auto grid grid-cols-3 h-16 p-1.5 bg-muted/60 backdrop-blur-sm rounded-2xl border border-border/50">
-                <TabsTrigger value="lessons" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
-                  <BookOpen className="w-5 h-5" />
-                  <span className="hidden sm:inline">الدروس</span>
-                  <span className="text-xs text-muted-foreground font-bold">({content.lessons.length})</span>
-                </TabsTrigger>
-                <TabsTrigger value="exams" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
-                  <FileText className="w-5 h-5" />
-                  <span className="hidden sm:inline">الامتحانات</span>
-                  <span className="text-xs text-muted-foreground font-bold">({content.exams.length})</span>
-                </TabsTrigger>
-                <TabsTrigger value="videos" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
-                  <Video className="w-5 h-5" />
-                  <span className="hidden sm:inline">الفيديوهات</span>
-                  <span className="text-xs text-muted-foreground font-bold">({content.videos.length})</span>
-                </TabsTrigger>
-              </TabsList>
+            {isLoading ? (
+              <ContentSkeleton type="card" count={6} />
+            ) : (
+              <Tabs defaultValue="lessons" className="space-y-10">
+                <TabsList className="w-full max-w-lg mx-auto grid grid-cols-3 h-16 p-1.5 bg-muted/60 backdrop-blur-sm rounded-2xl border border-border/50">
+                  <TabsTrigger value="lessons" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                    <BookOpen className="w-5 h-5" />
+                    <span className="hidden sm:inline">الدروس</span>
+                    <span className="text-xs text-muted-foreground font-bold">({lessons.length})</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="exams" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                    <FileText className="w-5 h-5" />
+                    <span className="hidden sm:inline">الامتحانات</span>
+                    <span className="text-xs text-muted-foreground font-bold">({exams.length})</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="videos" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                    <Video className="w-5 h-5" />
+                    <span className="hidden sm:inline">الفيديوهات</span>
+                    <span className="text-xs text-muted-foreground font-bold">({videos.length})</span>
+                  </TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="lessons" className="space-y-6">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {content.lessons.map((item, index) => (
-                    <ContentCard
-                      key={item.id}
-                      type="lesson"
-                      title={item.title}
-                      description={item.description}
-                      level={level.branch || level.title}
-                      href={`/level/${levelId}/lesson/${item.id}`}
-                      delay={index * 0.1}
-                    />
-                  ))}
-                </div>
-              </TabsContent>
+                <TabsContent value="lessons" className="space-y-6">
+                  {lessons.length > 0 ? (
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {lessons.map((item, index) => (
+                        <ContentCard
+                          key={item.id}
+                          type="lesson"
+                          title={item.title}
+                          description={item.description || ""}
+                          level={level.title}
+                          href={`/content/lesson/${item.id}`}
+                          delay={index * 0.1}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-16">
+                      <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد دروس حالياً</h3>
+                      <p className="text-muted-foreground">سيتم إضافة الدروس قريباً</p>
+                    </div>
+                  )}
+                </TabsContent>
 
-              <TabsContent value="exams" className="space-y-6">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {content.exams.map((item, index) => (
-                    <ContentCard
-                      key={item.id}
-                      type="exam"
-                      title={item.title}
-                      description={item.description}
-                      level={level.branch || level.title}
-                      href={`/level/${levelId}/exam/${item.id}`}
-                      downloadUrl="#"
-                      delay={index * 0.1}
-                    />
-                  ))}
-                </div>
-              </TabsContent>
+                <TabsContent value="exams" className="space-y-6">
+                  {exams.length > 0 ? (
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {exams.map((item, index) => (
+                        <ContentCard
+                          key={item.id}
+                          type="exam"
+                          title={item.title}
+                          description={item.description || ""}
+                          level={level.title}
+                          href={`/content/exam/${item.id}`}
+                          downloadUrl="#"
+                          delay={index * 0.1}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-16">
+                      <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد امتحانات حالياً</h3>
+                      <p className="text-muted-foreground">سيتم إضافة الامتحانات قريباً</p>
+                    </div>
+                  )}
+                </TabsContent>
 
-              <TabsContent value="videos" className="space-y-6">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {content.videos.map((item, index) => (
-                    <ContentCard
-                      key={item.id}
-                      type="video"
-                      title={item.title}
-                      description={item.description}
-                      level={level.branch || level.title}
-                      href={`/level/${levelId}/video/${item.id}`}
-                      delay={index * 0.1}
-                    />
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+                <TabsContent value="videos" className="space-y-6">
+                  {videos.length > 0 ? (
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {videos.map((item, index) => (
+                        <ContentCard
+                          key={item.id}
+                          type="video"
+                          title={item.title}
+                          description={item.description || ""}
+                          level={level.title}
+                          href={`/content/video/${item.id}`}
+                          delay={index * 0.1}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-16">
+                      <Video className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد فيديوهات حالياً</h3>
+                      <p className="text-muted-foreground">سيتم إضافة الفيديوهات قريباً</p>
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
+            )}
           </div>
         </section>
       </main>
