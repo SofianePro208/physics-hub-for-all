@@ -1,9 +1,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
-import { ChevronRight, HelpCircle, Plus, Minus } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
+import { HelpCircle, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -89,17 +90,22 @@ const faqCategories = [
 const FAQPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="الأسئلة الشائعة"
+        description="إجابات على الأسئلة الأكثر شيوعاً حول منصة العلوم الفيزيائية. تعرف على كيفية استخدام المنصة والمحتوى المتوفر."
+        keywords="أسئلة شائعة, مساعدة, دعم, منصة فيزياء, الجزائر"
+      />
       <Header />
       
       <main className="pt-24 lg:pt-28">
         {/* Hero Section */}
         <section className="gradient-hero py-16 lg:py-24">
           <div className="container mx-auto px-4">
-            <nav className="flex items-center gap-2 text-white/70 mb-8 animate-fade-in">
-              <Link to="/" className="hover:text-white transition-colors">الرئيسية</Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-white">الأسئلة الشائعة</span>
-            </nav>
+            <PageBreadcrumb 
+              items={[{ label: "الأسئلة الشائعة" }]} 
+              className="mb-8"
+              variant="light"
+            />
 
             <div className="max-w-3xl animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-6">

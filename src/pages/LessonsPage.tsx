@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ContentByLevel from "@/components/ContentByLevel";
+import SEOHead from "@/components/SEOHead";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { BookOpen } from "lucide-react";
 
 const allLessons = [
@@ -21,12 +23,22 @@ const allLessons = [
 const LessonsPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="الدروس"
+        description="جميع دروس الفيزياء والكيمياء للتعليم الثانوي الجزائري. دروس مفصلة ومرتبة حسب المستوى الدراسي."
+        keywords="دروس فيزياء, دروس كيمياء, ثانوي, الجزائر, شرح دروس"
+      />
       <Header />
       
       <main className="pt-24 lg:pt-28">
         {/* Hero Section */}
         <section className="gradient-hero py-16 lg:py-24">
           <div className="container mx-auto px-4">
+            <PageBreadcrumb 
+              items={[{ label: "الدروس" }]} 
+              className="mb-8"
+              variant="light"
+            />
             <div className="max-w-3xl animate-fade-in">
               <div className="w-16 h-16 rounded-2xl bg-primary-foreground/10 flex items-center justify-center mb-6">
                 <BookOpen className="w-8 h-8 text-primary-foreground" />

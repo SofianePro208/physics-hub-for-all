@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import SEOHead from "@/components/SEOHead";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { 
   GraduationCap, 
   Target, 
@@ -8,12 +10,10 @@ import {
   Award, 
   BookOpen, 
   CheckCircle,
-  ChevronRight,
   Atom,
   Lightbulb,
   Heart
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const stats = [
   { value: "10+", label: "سنوات خبرة", icon: Award },
@@ -50,17 +50,22 @@ const milestones = [
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="من نحن"
+        description="تعرف على منصة العلوم الفيزيائية - منصة تعليمية متخصصة في تقديم محتوى عالي الجودة لطلاب التعليم الثانوي الجزائري."
+        keywords="من نحن, منصة تعليمية, فيزياء الجزائر, تعليم ثانوي"
+      />
       <Header />
       
       <main className="pt-24 lg:pt-28">
         {/* Hero Section */}
         <section className="gradient-hero py-16 lg:py-24">
           <div className="container mx-auto px-4">
-            <nav className="flex items-center gap-2 text-white/70 mb-8 animate-fade-in">
-              <Link to="/" className="hover:text-white transition-colors">الرئيسية</Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-white">من نحن</span>
-            </nav>
+            <PageBreadcrumb 
+              items={[{ label: "من نحن" }]} 
+              className="mb-8"
+              variant="light"
+            />
 
             <div className="max-w-3xl animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-6">
