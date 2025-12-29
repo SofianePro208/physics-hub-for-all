@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, FileText, Video, MessageSquare, TrendingUp, Users } from "lucide-react";
+import { BookOpen, FileText, Video, MessageSquare, RefreshCw } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 interface Stats {
   lessons: number;
@@ -11,35 +12,57 @@ interface Stats {
   messages: number;
 }
 
-const AdminStatsCards = () => {
+interface AdminStatsCardsProps {
+  refreshTrigger?: number;
+}
+
+const AdminStatsCards = ({ refreshTrigger }: AdminStatsCardsProps) => {
   const [stats, setStats] = useState<Stats>({ lessons: 0, exams: 0, videos: 0, messages: 0 });
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchStats = useCallback(async (showRefresh = false) => {
+    if (showRefresh) setIsRefreshing(true);
+    try {
+      const [lessonsRes, examsRes, videosRes, messagesRes] = await Promise.all([
+        supabase.from("lessons").select("id", { count: "exact", head: true }),
+        supabase.from("exams").select("id", { count: "exact", head: true }),
+        supabase.from("videos").select("id", { count: "exact", head: true }),
+        supabase.from("contact_messages").select("id", { count: "exact", head: true }),
+      ]);
+
+      setStats({
+        lessons: lessonsRes.count || 0,
+        exams: examsRes.count || 0,
+        videos: videosRes.count || 0,
+        messages: messagesRes.count || 0,
+      });
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const [lessonsRes, examsRes, videosRes, messagesRes] = await Promise.all([
-          supabase.from("lessons").select("id", { count: "exact", head: true }),
-          supabase.from("exams").select("id", { count: "exact", head: true }),
-          supabase.from("videos").select("id", { count: "exact", head: true }),
-          supabase.from("contact_messages").select("id", { count: "exact", head: true }),
-        ]);
-
-        setStats({
-          lessons: lessonsRes.count || 0,
-          exams: examsRes.count || 0,
-          videos: videosRes.count || 0,
-          messages: messagesRes.count || 0,
-        });
-      } catch (error) {
-        console.error("Error fetching stats:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchStats();
-  }, []);
+  }, [fetchStats, refreshTrigger]);
+
+  // Subscribe to realtime changes
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-stats')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'lessons' }, () => fetchStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'exams' }, () => fetchStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'videos' }, () => fetchStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_messages' }, () => fetchStats())
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchStats]);
 
   const statsConfig = [
     {
