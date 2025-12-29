@@ -133,8 +133,8 @@ const Footer = () => {
               جميع الحقوق محفوظة © {new Date().getFullYear()} - فيزياء الثانوي
             </p>
             <div className="flex items-center gap-6 text-sm text-white/60">
-              <a href="#" className="hover:text-physics-cyan transition-colors">سياسة الخصوصية</a>
-              <a href="#" className="hover:text-physics-cyan transition-colors">شروط الاستخدام</a>
+              <Link to="/privacy" className="hover:text-physics-cyan transition-colors">سياسة الخصوصية</Link>
+              <Link to="/terms" className="hover:text-physics-cyan transition-colors">شروط الاستخدام</Link>
             </div>
           </div>
         </div>

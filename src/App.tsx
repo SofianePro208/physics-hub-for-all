@@ -9,6 +9,8 @@ import LevelPage from "./pages/LevelPage";
 import LessonsPage from "./pages/LessonsPage";
 import ExamsPage from "./pages/ExamsPage";
 import VideosPage from "./pages/VideosPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfUsePage from "./pages/TermsOfUsePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/lessons" element={<LessonsPage />} />
             <Route path="/exams" element={<ExamsPage />} />
             <Route path="/videos" element={<VideosPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsOfUsePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
