@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
+        sans: ["IBM Plex Sans Arabic", "Cairo", "sans-serif"],
         cairo: ["Cairo", "sans-serif"],
-        tajawal: ["Tajawal", "sans-serif"],
+        kufi: ["Noto Kufi Arabic", "sans-serif"],
+        ibm: ["IBM Plex Sans Arabic", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
