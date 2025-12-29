@@ -106,6 +106,7 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
         title: title.trim(),
         description: description.trim() || null,
         level_id: levelId,
+        trimester: parseInt(trimester),
       };
 
       if (type === "video") {
@@ -114,7 +115,6 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
         data.pdf_url = pdfUrl;
         if (type === "exam") {
           data.solution_pdf_url = solutionPdfUrl;
-          data.trimester = parseInt(trimester);
           data.exam_type = examType;
         }
       }
@@ -199,43 +199,41 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
             </Select>
           </div>
 
-          {type === "exam" && (
-            <>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>الفصل الدراسي *</Label>
-                  <Select value={trimester} onValueChange={setTrimester}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="اختر الفصل" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {trimesters.map((t) => (
-                        <SelectItem key={t.id} value={t.id.toString()}>
-                          {t.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+          <div className={type === "exam" ? "grid grid-cols-2 gap-4" : ""}>
+            <div className="space-y-2">
+              <Label>الفصل الدراسي *</Label>
+              <Select value={trimester} onValueChange={setTrimester}>
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر الفصل" />
+                </SelectTrigger>
+                <SelectContent>
+                  {trimesters.map((t) => (
+                    <SelectItem key={t.id} value={t.id.toString()}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-                <div className="space-y-2">
-                  <Label>نوع الامتحان *</Label>
-                  <Select value={examType} onValueChange={setExamType}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="اختر النوع" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {examTypes.map((t) => (
-                        <SelectItem key={t.id} value={t.id}>
-                          {t.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            {type === "exam" && (
+              <div className="space-y-2">
+                <Label>نوع الامتحان *</Label>
+                <Select value={examType} onValueChange={setExamType}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="اختر النوع" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {examTypes.map((t) => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-            </>
-          )}
+            )}
+          </div>
 
           {type === "video" ? (
             <div className="space-y-2">

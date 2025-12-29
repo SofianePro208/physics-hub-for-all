@@ -14,6 +14,7 @@ interface Lesson {
   title: string;
   description: string | null;
   level_id: string;
+  trimester: number | null;
 }
 
 const LessonsPage = () => {
@@ -25,7 +26,7 @@ const LessonsPage = () => {
       try {
         const { data, error } = await supabase
           .from("lessons")
-          .select("id, title, description, level_id")
+          .select("id, title, description, level_id, trimester")
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -51,6 +52,7 @@ const LessonsPage = () => {
     description: lesson.description || "",
     level: getLevelName(lesson.level_id),
     levelId: lesson.level_id,
+    trimester: lesson.trimester || 1,
   }));
 
   function getLevelName(levelId: string): string {
