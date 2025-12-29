@@ -10,6 +10,8 @@ import LessonsPage from "./pages/LessonsPage";
 import ExamsPage from "./pages/ExamsPage";
 import VideosPage from "./pages/VideosPage";
 import ContactPage from "./pages/ContactPage";
+import AboutPage from "./pages/AboutPage";
+import FAQPage from "./pages/FAQPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfUsePage from "./pages/TermsOfUsePage";
 import NotFound from "./pages/NotFound";
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/exams" element={<ExamsPage />} />
             <Route path="/videos" element={<VideosPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsOfUsePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

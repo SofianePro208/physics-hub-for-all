@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Atom, Menu, X, Home, ChevronDown, Mail } from "lucide-react";
+import { Atom, Menu, X, Home, ChevronDown, Mail, Info, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import SearchDialog from "@/components/SearchDialog";
@@ -17,6 +17,8 @@ import {
 
 const navLinks = [
   { label: "الرئيسية", href: "/", icon: Home },
+  { label: "من نحن", href: "/about", icon: Info },
+  { label: "الأسئلة الشائعة", href: "/faq", icon: HelpCircle },
   { label: "اتصل بنا", href: "/contact", icon: Mail },
 ];
 

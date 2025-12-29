@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import SharePrintButtons from "@/components/SharePrintButtons";
 import ContentCard from "@/components/ContentCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, ChevronRight, GraduationCap } from "lucide-react";
@@ -180,8 +181,15 @@ const LevelPage = () => {
             </nav>
 
             <div className="max-w-3xl animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <div className="w-16 h-16 rounded-2xl bg-primary-foreground/10 flex items-center justify-center mb-6">
-                <GraduationCap className="w-8 h-8 text-primary-foreground" />
+              <div className="flex items-start justify-between gap-4 mb-6">
+                <div className="w-16 h-16 rounded-2xl bg-primary-foreground/10 flex items-center justify-center">
+                  <GraduationCap className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <SharePrintButtons 
+                  title={level.title} 
+                  description={level.description}
+                  className="[&_button]:border-white/20 [&_button]:text-white [&_button]:hover:bg-white/10"
+                />
               </div>
               <h1 className="text-3xl lg:text-5xl font-bold text-primary-foreground mb-4">
                 {level.title}
