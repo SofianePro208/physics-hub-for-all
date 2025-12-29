@@ -34,7 +34,7 @@ const LevelsSection = () => {
             اختر مستواك الدراسي
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            محتوى تعليمي شامل ومنظم حسب كل مستوى وشعبة
+            محتوى تعليمي شامل ومنظم حسب كل مستوى دراسي
           </p>
         </div>
 
