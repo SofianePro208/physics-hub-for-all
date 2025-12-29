@@ -88,6 +88,7 @@ export type Database = {
           level_id: string
           pdf_url: string | null
           title: string
+          trimester: number | null
           updated_at: string
         }
         Insert: {
@@ -97,6 +98,7 @@ export type Database = {
           level_id: string
           pdf_url?: string | null
           title: string
+          trimester?: number | null
           updated_at?: string
         }
         Update: {
@@ -106,6 +108,7 @@ export type Database = {
           level_id?: string
           pdf_url?: string | null
           title?: string
+          trimester?: number | null
           updated_at?: string
         }
         Relationships: []
@@ -117,6 +120,7 @@ export type Database = {
           id: string
           level_id: string
           title: string
+          trimester: number | null
           updated_at: string
           youtube_url: string | null
         }
@@ -126,6 +130,7 @@ export type Database = {
           id?: string
           level_id: string
           title: string
+          trimester?: number | null
           updated_at?: string
           youtube_url?: string | null
         }
@@ -135,6 +140,7 @@ export type Database = {
           id?: string
           level_id?: string
           title?: string
+          trimester?: number | null
           updated_at?: string
           youtube_url?: string | null
         }

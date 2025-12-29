@@ -14,6 +14,7 @@ interface VideoItem {
   title: string;
   description: string | null;
   level_id: string;
+  trimester: number | null;
 }
 
 const VideosPage = () => {
@@ -25,7 +26,7 @@ const VideosPage = () => {
       try {
         const { data, error } = await supabase
           .from("videos")
-          .select("id, title, description, level_id")
+          .select("id, title, description, level_id, trimester")
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -51,6 +52,7 @@ const VideosPage = () => {
     description: video.description || "",
     level: getLevelName(video.level_id),
     levelId: video.level_id,
+    trimester: video.trimester || 1,
   }));
 
   function getLevelName(levelId: string): string {
