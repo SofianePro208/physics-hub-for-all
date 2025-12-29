@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SEOHead from "@/components/SEOHead";
 import PDFViewer from "@/components/PDFViewer";
+import RelatedContent from "@/components/RelatedContent";
 import { toast } from "@/hooks/use-toast";
 
 type ContentType = "lesson" | "exam" | "video";
@@ -276,7 +277,14 @@ const ContentViewPage = () => {
             </CardContent>
           </Card>
 
-          {/* Related Content Link */}
+          {/* Related Content Section */}
+          <RelatedContent 
+            type={config.table} 
+            levelId={content.level_id} 
+            currentId={content.id} 
+          />
+
+          {/* More Content Link */}
           <div className="mt-8 text-center">
             <Link
               to={`/${contentType}s`}
