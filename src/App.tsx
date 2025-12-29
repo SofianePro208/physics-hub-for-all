@@ -9,6 +9,7 @@ import LevelPage from "./pages/LevelPage";
 import LessonsPage from "./pages/LessonsPage";
 import ExamsPage from "./pages/ExamsPage";
 import VideosPage from "./pages/VideosPage";
+import ContentViewPage from "./pages/ContentViewPage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import FAQPage from "./pages/FAQPage";
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/lessons" element={<LessonsPage />} />
             <Route path="/exams" element={<ExamsPage />} />
             <Route path="/videos" element={<VideosPage />} />
+            <Route path="/content/:type/:id" element={<ContentViewPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/faq" element={<FAQPage />} />

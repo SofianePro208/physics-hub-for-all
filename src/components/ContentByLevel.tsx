@@ -109,7 +109,7 @@ const ContentByLevel = ({ items, type }: ContentByLevelProps) => {
                               title={item.title}
                               description={item.description}
                               level={branch.name}
-                              href={`/level/${item.levelId}/${typeRoutes[type]}/${item.id}`}
+                              href={`/content/${type}/${item.id}`}
                               downloadUrl={type === "exam" ? "#" : undefined}
                               delay={index * 0.05}
                             />
@@ -129,7 +129,7 @@ const ContentByLevel = ({ items, type }: ContentByLevelProps) => {
                       title={item.title}
                       description={item.description}
                       level={level.name}
-                      href={`/level/${item.levelId}/${typeRoutes[type]}/${item.id}`}
+                      href={`/content/${type}/${item.id}`}
                       downloadUrl={type === "exam" ? "#" : undefined}
                       delay={index * 0.05}
                     />
