@@ -106,12 +106,9 @@ const TestimonialsSection = () => {
       </div>
 
       {/* Testimonials Marquee - Full Width */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden" dir="ltr">
         <div 
-          className="flex gap-6 w-max"
-          style={{
-            animation: 'scroll 60s linear infinite',
-          }}
+          className="flex gap-6 w-max animate-scroll-rtl"
         >
           {duplicatedTestimonials.map((testimonial, index) => (
             <div
@@ -124,19 +121,19 @@ const TestimonialsSection = () => {
               </div>
 
               {/* Rating */}
-              <div className="flex gap-1 mb-6">
+              <div className="flex gap-1 mb-6" dir="rtl">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-physics-gold text-physics-gold" />
                 ))}
               </div>
 
               {/* Content */}
-              <p className="text-muted-foreground leading-relaxed mb-8 line-clamp-4">
+              <p className="text-muted-foreground leading-relaxed mb-8 line-clamp-4" dir="rtl">
                 "{testimonial.content}"
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4" dir="rtl">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-physics-blue to-physics-cyan flex items-center justify-center text-xl font-bold text-primary-foreground">
                   {testimonial.image}
                 </div>
@@ -151,13 +148,19 @@ const TestimonialsSection = () => {
       </div>
 
       <style>{`
-        @keyframes scroll {
+        @keyframes scroll-rtl {
           0% {
-            transform: translateX(0);
+            transform: translateX(0%);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(50%);
           }
+        }
+        .animate-scroll-rtl {
+          animation: scroll-rtl 50s linear infinite;
+        }
+        .animate-scroll-rtl:hover {
+          animation-play-state: paused;
         }
       `}</style>
     </section>
