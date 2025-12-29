@@ -3,29 +3,21 @@ import LevelCard from "./LevelCard";
 const levels = [
   {
     title: "السنة الأولى ثانوي",
-    description: "جذع مشترك علوم وتكنولوجيا - أساسيات الفيزياء والكيمياء للتعليم الثانوي",
+    description: "أساسيات الفيزياء والكيمياء للتعليم الثانوي",
     href: "/level/1as",
     color: "blue" as const,
   },
   {
     title: "السنة الثانية ثانوي",
-    description: "دراسة معمقة للميكانيك والكهرباء والكيمياء حسب التخصص",
+    description: "دراسة معمقة للميكانيك والكهرباء والكيمياء",
     href: "/level/2as",
     color: "cyan" as const,
-    branches: [
-      { name: "علوم تجريبية", href: "/level/2as-se" },
-      { name: "رياضيات وتقني رياضي", href: "/level/2as-mt" },
-    ],
   },
   {
     title: "السنة الثالثة ثانوي",
     description: "تحضير شامل لامتحان البكالوريا مع مواضيع وحلول نموذجية",
     href: "/level/3as",
     color: "gold" as const,
-    branches: [
-      { name: "علوم تجريبية", href: "/level/3as-se" },
-      { name: "رياضيات وتقني رياضي", href: "/level/3as-mt" },
-    ],
   },
 ];
 
