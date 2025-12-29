@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
-import ContentByLevel from "@/components/ContentByLevel";
+import ExamsByTrimester from "@/components/ExamsByTrimester";
 import SEOHead from "@/components/SEOHead";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import ContentSkeleton from "@/components/ContentSkeleton";
@@ -14,6 +14,8 @@ interface Exam {
   title: string;
   description: string | null;
   level_id: string;
+  trimester: number | null;
+  exam_type: string | null;
 }
 
 const ExamsPage = () => {
@@ -25,7 +27,7 @@ const ExamsPage = () => {
       try {
         const { data, error } = await supabase
           .from("exams")
-          .select("id, title, description, level_id")
+          .select("id, title, description, level_id, trimester, exam_type")
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -44,13 +46,15 @@ const ExamsPage = () => {
     fetchExams();
   }, []);
 
-  // Transform data for ContentByLevel component
+  // Transform data for ExamsByTrimester component
   const formattedExams = exams.map((exam) => ({
     id: exam.id,
     title: exam.title,
     description: exam.description || "",
     level: getLevelName(exam.level_id),
     levelId: exam.level_id,
+    trimester: exam.trimester || 1,
+    examType: exam.exam_type || "test",
   }));
 
   function getLevelName(levelId: string): string {
@@ -91,7 +95,7 @@ const ExamsPage = () => {
                 الامتحانات
               </h1>
               <p className="text-xl text-primary-foreground/80">
-                فروض واختبارات ومواضيع بكالوريا مع الحلول مرتبة حسب المستوى
+                فروض واختبارات وسلاسل تمارين مرتبة حسب الفصل والمستوى
               </p>
             </div>
           </div>
@@ -103,7 +107,7 @@ const ExamsPage = () => {
             {isLoading ? (
               <ContentSkeleton type="card" count={6} />
             ) : formattedExams.length > 0 ? (
-              <ContentByLevel items={formattedExams} type="exam" />
+              <ExamsByTrimester items={formattedExams} />
             ) : (
               <div className="text-center py-16">
                 <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
