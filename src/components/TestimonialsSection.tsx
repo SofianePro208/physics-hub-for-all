@@ -1,0 +1,91 @@
+import { Star, Quote } from "lucide-react";
+
+const testimonials = [
+  {
+    name: "أحمد بن علي",
+    role: "طالب سنة ثالثة ثانوي - علوم تجريبية",
+    content: "بفضل هذه المنصة تمكنت من فهم الدروس الصعبة وتحسين مستواي بشكل ملحوظ. الشروحات واضحة ومبسطة.",
+    rating: 5,
+    image: "أ",
+  },
+  {
+    name: "فاطمة الزهراء",
+    role: "طالبة سنة ثانية ثانوي - رياضيات",
+    content: "الامتحانات المقترحة ساعدتني كثيراً في التحضير للفروض. أنصح بها كل الطلاب.",
+    rating: 5,
+    image: "ف",
+  },
+  {
+    name: "محمد أمين",
+    role: "طالب سنة أولى ثانوي",
+    content: "الفيديوهات التعليمية رائعة جداً، خاصة في شرح التجارب العلمية. شكراً للأساتذة.",
+    rating: 5,
+    image: "م",
+  },
+];
+
+const TestimonialsSection = () => {
+  return (
+    <section className="py-20 lg:py-32 bg-background relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-physics-cyan/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-physics-blue/5 rounded-full blur-3xl" />
+
+      <div className="container mx-auto px-4 relative">
+        {/* Section Header */}
+        <div className="text-center mb-16 animate-fade-in">
+          <span className="inline-block px-4 py-2 rounded-full bg-physics-gold/10 text-physics-gold text-sm font-semibold mb-4">
+            آراء الطلاب
+          </span>
+          <h2 className="text-3xl lg:text-5xl font-bold text-foreground mb-4">
+            ماذا يقول طلابنا؟
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            تجارب حقيقية من طلاب استفادوا من منصتنا التعليمية
+          </p>
+        </div>
+
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="group relative bg-card rounded-2xl p-8 border border-border/50 hover:border-physics-cyan/30 shadow-card hover:shadow-card-hover transition-all duration-500 animate-fade-in"
+              style={{ animationDelay: `${index * 0.15}s` }}
+            >
+              {/* Quote Icon */}
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-physics-cyan/10 flex items-center justify-center">
+                <Quote className="w-6 h-6 text-physics-cyan" />
+              </div>
+
+              {/* Rating */}
+              <div className="flex gap-1 mb-6">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-physics-gold text-physics-gold" />
+                ))}
+              </div>
+
+              {/* Content */}
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                "{testimonial.content}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-physics-blue to-physics-cyan flex items-center justify-center text-xl font-bold text-primary-foreground">
+                  {testimonial.image}
+                </div>
+                <div>
+                  <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default TestimonialsSection;

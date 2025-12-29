@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         cairo: ["Cairo", "sans-serif"],
+        tajawal: ["Tajawal", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -56,6 +57,7 @@ export default {
           cyan: "hsl(var(--physics-cyan))",
           gold: "hsl(var(--physics-gold))",
           light: "hsl(var(--physics-light))",
+          purple: "hsl(var(--physics-purple))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -94,6 +96,14 @@ export default {
           from: { opacity: "0", transform: "scale(0.9)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        "glow": {
+          from: { boxShadow: "0 0 20px hsl(180 75% 42% / 0.3)" },
+          to: { boxShadow: "0 0 40px hsl(180 75% 42% / 0.6)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -101,6 +111,8 @@ export default {
         "fade-in": "fade-in 0.6s ease-out forwards",
         "slide-in-right": "slide-in-right 0.5s ease-out forwards",
         "scale-in": "scale-in 0.4s ease-out forwards",
+        "float": "float 6s ease-in-out infinite",
+        "glow": "glow 2s ease-in-out infinite alternate",
       },
     },
   },
