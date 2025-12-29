@@ -48,9 +48,8 @@ const Footer = () => {
             <ul className="space-y-3">
               {[
                 { label: "الرئيسية", href: "/" },
-                { label: "الدروس", href: "/lessons" },
-                { label: "الامتحانات", href: "/exams" },
-                { label: "الفيديوهات", href: "/videos" },
+                { label: "من نحن", href: "/about" },
+                { label: "الأسئلة الشائعة", href: "/faq" },
                 { label: "اتصل بنا", href: "/contact" },
               ].map((link) => (
                 <li key={link.href}>
