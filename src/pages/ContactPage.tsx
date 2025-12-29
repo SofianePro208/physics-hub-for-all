@@ -23,10 +23,10 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const contactInfo = [
-  { icon: Mail, title: "البريد الإلكتروني", value: "contact@physics-edu.dz", description: "راسلنا في أي وقت" },
-  { icon: Phone, title: "الهاتف", value: "+213 XXX XXX XXX", description: "من الأحد إلى الخميس" },
+  { icon: Mail, title: "البريد الإلكتروني", value: "sofiane.l.kalem@ens-lagh.dz", description: "راسلنا في أي وقت" },
+  { icon: Phone, title: "الهاتف", value: "+213 658 787 555", description: "من الأحد إلى الخميس" },
   { icon: Clock, title: "أوقات العمل", value: "8:00 - 18:00", description: "التوقيت المحلي الجزائري" },
-  { icon: MapPin, title: "العنوان", value: "الجزائر", description: "منصة تعليمية عبر الإنترنت" },
+  { icon: MapPin, title: "العنوان", value: "مستغانم، الجزائر", description: "منصة تعليمية عبر الإنترنت" },
 ];
 
 const ContactPage = () => {
