@@ -30,16 +30,14 @@ const levels = [
     label: "السنة الثانية ثانوي",
     branches: [
       { label: "علوم تجريبية", href: "/level/2as-se" },
-      { label: "رياضيات", href: "/level/2as-mt" },
-      { label: "تقني رياضي", href: "/level/2as-tm" },
+      { label: "رياضيات وتقني رياضي", href: "/level/2as-mt" },
     ],
   },
   {
     label: "السنة الثالثة ثانوي",
     branches: [
       { label: "علوم تجريبية", href: "/level/3as-se" },
-      { label: "رياضيات", href: "/level/3as-mt" },
-      { label: "تقني رياضي", href: "/level/3as-tm" },
+      { label: "رياضيات وتقني رياضي", href: "/level/3as-mt" },
     ],
   },
 ];

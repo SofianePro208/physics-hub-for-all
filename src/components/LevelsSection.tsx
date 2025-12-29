@@ -14,8 +14,7 @@ const levels = [
     color: "cyan" as const,
     branches: [
       { name: "علوم تجريبية", href: "/level/2as-se" },
-      { name: "رياضيات", href: "/level/2as-mt" },
-      { name: "تقني رياضي", href: "/level/2as-tm" },
+      { name: "رياضيات وتقني رياضي", href: "/level/2as-mt" },
     ],
   },
   {
@@ -25,8 +24,7 @@ const levels = [
     color: "gold" as const,
     branches: [
       { name: "علوم تجريبية", href: "/level/3as-se" },
-      { name: "رياضيات", href: "/level/3as-mt" },
-      { name: "تقني رياضي", href: "/level/3as-tm" },
+      { name: "رياضيات وتقني رياضي", href: "/level/3as-mt" },
     ],
   },
 ];
