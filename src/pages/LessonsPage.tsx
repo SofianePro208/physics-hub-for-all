@@ -1,26 +1,71 @@
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ContentByLevel from "@/components/ContentByLevel";
 import SEOHead from "@/components/SEOHead";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import ContentSkeleton from "@/components/ContentSkeleton";
 import { BookOpen } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const allLessons = [
-  { id: 1, title: "الحركة والسكون", description: "دراسة المرجع والمعلم في الفيزياء", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 2, title: "السرعة المتوسطة واللحظية", description: "حساب السرعة في الحركات المختلفة", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 3, title: "القوة والحركة", description: "العلاقة بين القوة والتسارع", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 4, title: "القوى والتوازن", description: "شروط توازن جسم صلب خاضع لقوتين", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 5, title: "العمل والطاقة", description: "العمل الميكانيكي والطاقة الحركية", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 6, title: "الطاقة الحركية والكامنة", description: "أشكال الطاقة وتحولاتها", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 7, title: "كمية الحركة", description: "انحفاظ كمية الحركة والتصادمات", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 8, title: "الظواهر الكهربائية", description: "الدارات الكهربائية والقوانين الأساسية", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 9, title: "تطور جملة كيميائية", description: "التحولات الكيميائية والتقدم", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 10, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-  { id: 11, title: "الموجات الكهرومغناطيسية", description: "الضوء والظواهر الموجية", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-];
+interface Lesson {
+  id: string;
+  title: string;
+  description: string | null;
+  level_id: string;
+}
 
 const LessonsPage = () => {
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("lessons")
+          .select("id, title, description, level_id")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching lessons:", error);
+          return;
+        }
+
+        setLessons(data || []);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLessons();
+  }, []);
+
+  // Transform data for ContentByLevel component
+  const formattedLessons = lessons.map((lesson) => ({
+    id: lesson.id,
+    title: lesson.title,
+    description: lesson.description || "",
+    level: getLevelName(lesson.level_id),
+    levelId: lesson.level_id,
+  }));
+
+  function getLevelName(levelId: string): string {
+    const levelNames: Record<string, string> = {
+      "1as-st": "السنة الأولى ثانوي",
+      "2as-se": "السنة الثانية - علوم تجريبية",
+      "2as-mt": "السنة الثانية - رياضيات",
+      "2as-tm": "السنة الثانية - تقني رياضي",
+      "3as-se": "السنة الثالثة - علوم تجريبية",
+      "3as-mt": "السنة الثالثة - رياضيات",
+      "3as-tm": "السنة الثالثة - تقني رياضي",
+    };
+    return levelNames[levelId] || levelId;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -56,7 +101,17 @@ const LessonsPage = () => {
         {/* Content Section */}
         <section className="py-12 lg:py-20">
           <div className="container mx-auto px-4">
-            <ContentByLevel items={allLessons} type="lesson" />
+            {isLoading ? (
+              <ContentSkeleton type="card" count={6} />
+            ) : formattedLessons.length > 0 ? (
+              <ContentByLevel items={formattedLessons} type="lesson" />
+            ) : (
+              <div className="text-center py-16">
+                <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد دروس حالياً</h3>
+                <p className="text-muted-foreground">سيتم إضافة الدروس قريباً</p>
+              </div>
+            )}
           </div>
         </section>
       </main>

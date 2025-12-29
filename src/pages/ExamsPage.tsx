@@ -1,28 +1,71 @@
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ContentByLevel from "@/components/ContentByLevel";
 import SEOHead from "@/components/SEOHead";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import ContentSkeleton from "@/components/ContentSkeleton";
 import { FileText } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const allExams = [
-  { id: 1, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 2, title: "اختبار الفصل الأول", description: "الاختبار الفصلي مع الحل", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 3, title: "فرض الفصل الثاني", description: "امتحان شامل للفصل الثاني", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 4, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 5, title: "اختبار الفصل الثاني", description: "الاختبار الفصلي مع الحل", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 6, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 7, title: "اختبار الفصل الثالث", description: "الاختبار النهائي مع الحل", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 8, title: "فرض الفصل الأول", description: "امتحان شامل للفصل الأول", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 9, title: "بكالوريا تجريبي", description: "امتحان بكالوريا تجريبي مع التصحيح", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 10, title: "بكالوريا 2023", description: "موضوع بكالوريا 2023 مع الحل", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 11, title: "بكالوريا 2022", description: "موضوع بكالوريا 2022 مع الحل", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-  { id: 12, title: "بكالوريا 2023", description: "موضوع بكالوريا 2023 مع الحل", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-  { id: 13, title: "سلسلة تمارين الميكانيك", description: "تمارين متنوعة في الميكانيك", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-];
+interface Exam {
+  id: string;
+  title: string;
+  description: string | null;
+  level_id: string;
+}
 
 const ExamsPage = () => {
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("exams")
+          .select("id, title, description, level_id")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching exams:", error);
+          return;
+        }
+
+        setExams(data || []);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchExams();
+  }, []);
+
+  // Transform data for ContentByLevel component
+  const formattedExams = exams.map((exam) => ({
+    id: exam.id,
+    title: exam.title,
+    description: exam.description || "",
+    level: getLevelName(exam.level_id),
+    levelId: exam.level_id,
+  }));
+
+  function getLevelName(levelId: string): string {
+    const levelNames: Record<string, string> = {
+      "1as-st": "السنة الأولى ثانوي",
+      "2as-se": "السنة الثانية - علوم تجريبية",
+      "2as-mt": "السنة الثانية - رياضيات",
+      "2as-tm": "السنة الثانية - تقني رياضي",
+      "3as-se": "السنة الثالثة - علوم تجريبية",
+      "3as-mt": "السنة الثالثة - رياضيات",
+      "3as-tm": "السنة الثالثة - تقني رياضي",
+    };
+    return levelNames[levelId] || levelId;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -58,7 +101,17 @@ const ExamsPage = () => {
         {/* Content Section */}
         <section className="py-12 lg:py-20">
           <div className="container mx-auto px-4">
-            <ContentByLevel items={allExams} type="exam" />
+            {isLoading ? (
+              <ContentSkeleton type="card" count={6} />
+            ) : formattedExams.length > 0 ? (
+              <ContentByLevel items={formattedExams} type="exam" />
+            ) : (
+              <div className="text-center py-16">
+                <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد امتحانات حالياً</h3>
+                <p className="text-muted-foreground">سيتم إضافة الامتحانات قريباً</p>
+              </div>
+            )}
           </div>
         </section>
       </main>
