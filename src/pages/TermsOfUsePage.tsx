@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 import { FileText, CheckCircle, XCircle, AlertTriangle, Scale, RefreshCw, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -164,6 +165,7 @@ const TermsOfUsePage = () => {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 import ContentByLevel from "@/components/ContentByLevel";
 import { Video } from "lucide-react";
 
@@ -49,6 +50,7 @@ const VideosPage = () => {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
