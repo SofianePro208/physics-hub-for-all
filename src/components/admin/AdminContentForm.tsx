@@ -17,10 +17,20 @@ interface AdminContentFormProps {
 
 const levels = [
   { id: "1as", label: "السنة الأولى ثانوي" },
-  { id: "2as-se", label: "السنة الثانية - علوم تجريبية" },
-  { id: "2as-mt", label: "السنة الثانية - رياضيات" },
-  { id: "3as-se", label: "السنة الثالثة - علوم تجريبية" },
-  { id: "3as-mt", label: "السنة الثالثة - رياضيات" },
+  { id: "2as", label: "السنة الثانية ثانوي" },
+  { id: "3as", label: "السنة الثالثة ثانوي" },
+];
+
+const trimesters = [
+  { id: 1, label: "الفصل الأول" },
+  { id: 2, label: "الفصل الثاني" },
+  { id: 3, label: "الفصل الثالث" },
+];
+
+const examTypes = [
+  { id: "assignment", label: "فرض" },
+  { id: "test", label: "اختبار" },
+  { id: "exercises", label: "سلسلة تمارين" },
 ];
 
 const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormProps) => {
@@ -31,6 +41,8 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
   const [title, setTitle] = useState(item?.title || "");
   const [description, setDescription] = useState(item?.description || "");
   const [levelId, setLevelId] = useState(item?.level_id || "");
+  const [trimester, setTrimester] = useState<string>(item?.trimester?.toString() || "1");
+  const [examType, setExamType] = useState(item?.exam_type || "test");
   const [youtubeUrl, setYoutubeUrl] = useState(item?.youtube_url || "");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [solutionFile, setSolutionFile] = useState<File | null>(null);
@@ -102,6 +114,8 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
         data.pdf_url = pdfUrl;
         if (type === "exam") {
           data.solution_pdf_url = solutionPdfUrl;
+          data.trimester = parseInt(trimester);
+          data.exam_type = examType;
         }
       }
 
@@ -184,6 +198,44 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
               </SelectContent>
             </Select>
           </div>
+
+          {type === "exam" && (
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>الفصل الدراسي *</Label>
+                  <Select value={trimester} onValueChange={setTrimester}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="اختر الفصل" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {trimesters.map((t) => (
+                        <SelectItem key={t.id} value={t.id.toString()}>
+                          {t.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>نوع الامتحان *</Label>
+                  <Select value={examType} onValueChange={setExamType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="اختر النوع" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {examTypes.map((t) => (
+                        <SelectItem key={t.id} value={t.id}>
+                          {t.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </>
+          )}
 
           {type === "video" ? (
             <div className="space-y-2">
