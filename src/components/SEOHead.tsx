@@ -17,7 +17,7 @@ const SEOHead = ({
   ogImage = "/og-image.png",
   ogType = "website",
 }: SEOHeadProps) => {
-  const fullTitle = `${title} | منصة العلوم الفيزيائية`;
+  const fullTitle = `${title} | Prof Sofiane - Physics Academy`;
   const siteUrl = window.location.origin;
   const currentUrl = canonicalUrl || window.location.href;
 
@@ -41,7 +41,7 @@ const SEOHead = ({
     updateMeta("description", description);
     updateMeta("keywords", keywords);
     updateMeta("robots", "index, follow");
-    updateMeta("author", "منصة العلوم الفيزيائية");
+    updateMeta("author", "Prof Sofiane");
 
     // Open Graph tags
     updateMeta("og:title", fullTitle, true);
@@ -49,7 +49,7 @@ const SEOHead = ({
     updateMeta("og:type", ogType, true);
     updateMeta("og:url", currentUrl, true);
     updateMeta("og:image", `${siteUrl}${ogImage}`, true);
-    updateMeta("og:site_name", "منصة العلوم الفيزيائية", true);
+    updateMeta("og:site_name", "Prof Sofiane | Physics Academy", true);
     updateMeta("og:locale", "ar_DZ", true);
 
     // Twitter Card tags
@@ -69,7 +69,7 @@ const SEOHead = ({
 
     // Cleanup on unmount
     return () => {
-      document.title = "منصة العلوم الفيزيائية";
+      document.title = "Prof Sofiane | Physics Academy";
     };
   }, [fullTitle, description, keywords, currentUrl, ogImage, ogType, siteUrl]);
 

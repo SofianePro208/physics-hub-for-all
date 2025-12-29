@@ -17,8 +17,8 @@ const Footer = () => {
                 <Atom className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white">فيزياء الثانوي</h3>
-                <p className="text-sm text-white/70">منصة تعليمية متكاملة</p>
+                <h3 className="text-xl font-bold text-white">Prof Sofiane</h3>
+                <p className="text-sm text-white/70">Physics Academy</p>
               </div>
             </Link>
             <p className="text-white/70 leading-relaxed mb-6">
@@ -128,7 +128,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white/60 text-center sm:text-right">
-              جميع الحقوق محفوظة © {new Date().getFullYear()} - فيزياء الثانوي
+              جميع الحقوق محفوظة © {new Date().getFullYear()} - Prof Sofiane | Physics Academy
             </p>
             <div className="flex items-center gap-6 text-sm text-white/60">
               <Link to="/privacy" className="hover:text-physics-cyan transition-colors">سياسة الخصوصية</Link>

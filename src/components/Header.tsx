@@ -65,8 +65,8 @@ const Header = () => {
               <Atom className="w-7 h-7 text-primary-foreground" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-foreground">فيزياء الثانوي</h1>
-              <p className="text-xs text-muted-foreground">منصة تعليمية متكاملة</p>
+              <h1 className="text-xl font-bold text-foreground">Prof Sofiane</h1>
+              <p className="text-xs text-muted-foreground">Physics Academy</p>
             </div>
           </Link>
 
