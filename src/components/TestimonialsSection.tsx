@@ -90,8 +90,8 @@ const TestimonialsSection = () => {
       <div className="absolute top-0 left-0 w-96 h-96 bg-physics-cyan/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-physics-blue/5 rounded-full blur-3xl" />
 
+      {/* Section Header */}
       <div className="container mx-auto px-4 relative">
-        {/* Section Header */}
         <div className="text-center mb-16 animate-fade-in">
           <span className="inline-block px-4 py-2 rounded-full bg-physics-gold/10 text-physics-gold text-sm font-semibold mb-4">
             آراء الطلاب
@@ -103,47 +103,63 @@ const TestimonialsSection = () => {
             تجارب حقيقية من طلاب استفادوا من منصتنا التعليمية
           </p>
         </div>
+      </div>
 
-        {/* Testimonials Marquee */}
-        <div className="relative overflow-hidden w-full">
-          <div className="flex gap-6 animate-marquee hover:[animation-play-state:paused] w-max">
-            {duplicatedTestimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="group relative flex-shrink-0 w-[350px] bg-card rounded-2xl p-8 border border-border/50 hover:border-physics-cyan/30 shadow-card hover:shadow-card-hover transition-all duration-500"
-              >
-                {/* Quote Icon */}
-                <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-physics-cyan/10 flex items-center justify-center">
-                  <Quote className="w-6 h-6 text-physics-cyan" />
+      {/* Testimonials Marquee - Full Width */}
+      <div className="relative w-full overflow-hidden">
+        <div 
+          className="flex gap-6 w-max"
+          style={{
+            animation: 'scroll 60s linear infinite',
+          }}
+        >
+          {duplicatedTestimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="group relative flex-shrink-0 w-[350px] bg-card rounded-2xl p-8 border border-border/50 hover:border-physics-cyan/30 shadow-card hover:shadow-card-hover transition-all duration-500"
+            >
+              {/* Quote Icon */}
+              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-physics-cyan/10 flex items-center justify-center">
+                <Quote className="w-6 h-6 text-physics-cyan" />
+              </div>
+
+              {/* Rating */}
+              <div className="flex gap-1 mb-6">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-physics-gold text-physics-gold" />
+                ))}
+              </div>
+
+              {/* Content */}
+              <p className="text-muted-foreground leading-relaxed mb-8 line-clamp-4">
+                "{testimonial.content}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-physics-blue to-physics-cyan flex items-center justify-center text-xl font-bold text-primary-foreground">
+                  {testimonial.image}
                 </div>
-
-                {/* Rating */}
-                <div className="flex gap-1 mb-6">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-physics-gold text-physics-gold" />
-                  ))}
-                </div>
-
-                {/* Content */}
-                <p className="text-muted-foreground leading-relaxed mb-8 line-clamp-4">
-                  "{testimonial.content}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-physics-blue to-physics-cyan flex items-center justify-center text-xl font-bold text-primary-foreground">
-                    {testimonial.image}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-foreground">{testimonial.name}</h4>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  </div>
+                <div>
+                  <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </section>
   );
 };
