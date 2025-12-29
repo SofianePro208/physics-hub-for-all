@@ -22,9 +22,40 @@ const testimonials = [
     rating: 5,
     image: "م",
   },
+  {
+    name: "سارة بوعلام",
+    role: "طالبة سنة ثالثة ثانوي - تقني رياضي",
+    content: "المنصة ساعدتني في فهم الفيزياء بطريقة سهلة. الشروحات المفصلة غيرت نظرتي للمادة تماماً.",
+    rating: 5,
+    image: "س",
+  },
+  {
+    name: "ياسين مراد",
+    role: "طالب سنة ثانية ثانوي - علوم تجريبية",
+    content: "أفضل منصة تعليمية استخدمتها. التمارين المحلولة ممتازة والأساتذة متميزون.",
+    rating: 5,
+    image: "ي",
+  },
+  {
+    name: "نور الهدى",
+    role: "طالبة سنة أولى ثانوي",
+    content: "كنت أجد صعوبة في الكيمياء لكن بفضل الفيديوهات أصبحت من أفضل الطالبات في القسم.",
+    rating: 5,
+    image: "ن",
+  },
+  {
+    name: "عبد الرحمن",
+    role: "طالب سنة ثالثة ثانوي - رياضيات",
+    content: "تحضيري للبكالوريا أصبح أسهل بكثير. المواضيع المقترحة مطابقة لمستوى الامتحانات الرسمية.",
+    rating: 5,
+    image: "ع",
+  },
 ];
 
 const TestimonialsSection = () => {
+  // Duplicate testimonials for seamless infinite scroll
+  const duplicatedTestimonials = [...testimonials, ...testimonials];
+
   return (
     <section className="py-20 lg:py-32 bg-background relative overflow-hidden">
       {/* Background Decoration */}
@@ -45,43 +76,44 @@ const TestimonialsSection = () => {
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="group relative bg-card rounded-2xl p-8 border border-border/50 hover:border-physics-cyan/30 shadow-card hover:shadow-card-hover transition-all duration-500 animate-fade-in"
-              style={{ animationDelay: `${index * 0.15}s` }}
-            >
-              {/* Quote Icon */}
-              <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-physics-cyan/10 flex items-center justify-center">
-                <Quote className="w-6 h-6 text-physics-cyan" />
-              </div>
-
-              {/* Rating */}
-              <div className="flex gap-1 mb-6">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-physics-gold text-physics-gold" />
-                ))}
-              </div>
-
-              {/* Content */}
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                "{testimonial.content}"
-              </p>
-
-              {/* Author */}
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-physics-blue to-physics-cyan flex items-center justify-center text-xl font-bold text-primary-foreground">
-                  {testimonial.image}
+        {/* Testimonials Marquee */}
+        <div className="relative overflow-hidden">
+          <div className="flex gap-6 animate-marquee hover:[animation-play-state:paused]">
+            {duplicatedTestimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="group relative flex-shrink-0 w-[350px] bg-card rounded-2xl p-8 border border-border/50 hover:border-physics-cyan/30 shadow-card hover:shadow-card-hover transition-all duration-500"
+              >
+                {/* Quote Icon */}
+                <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-physics-cyan/10 flex items-center justify-center">
+                  <Quote className="w-6 h-6 text-physics-cyan" />
                 </div>
-                <div>
-                  <h4 className="font-bold text-foreground">{testimonial.name}</h4>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+
+                {/* Rating */}
+                <div className="flex gap-1 mb-6">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-physics-gold text-physics-gold" />
+                  ))}
+                </div>
+
+                {/* Content */}
+                <p className="text-muted-foreground leading-relaxed mb-8 line-clamp-4">
+                  "{testimonial.content}"
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-physics-blue to-physics-cyan flex items-center justify-center text-xl font-bold text-primary-foreground">
+                    {testimonial.image}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
