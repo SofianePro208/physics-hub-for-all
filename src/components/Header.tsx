@@ -9,10 +9,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 const navLinks = [
@@ -23,24 +19,9 @@ const navLinks = [
 ];
 
 const levels = [
-  {
-    label: "السنة الأولى ثانوي",
-    href: "/level/1as",
-  },
-  {
-    label: "السنة الثانية ثانوي",
-    branches: [
-      { label: "علوم تجريبية", href: "/level/2as-se" },
-      { label: "رياضيات وتقني رياضي", href: "/level/2as-mt" },
-    ],
-  },
-  {
-    label: "السنة الثالثة ثانوي",
-    branches: [
-      { label: "علوم تجريبية", href: "/level/3as-se" },
-      { label: "رياضيات وتقني رياضي", href: "/level/3as-mt" },
-    ],
-  },
+  { label: "السنة الأولى ثانوي", href: "/level/1as" },
+  { label: "السنة الثانية ثانوي", href: "/level/2as" },
+  { label: "السنة الثالثة ثانوي", href: "/level/3as" },
 ];
 
 const Header = () => {
@@ -85,25 +66,10 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-popover">
-                {levels.map((level, index) => (
-                  level.branches ? (
-                    <DropdownMenuSub key={index}>
-                      <DropdownMenuSubTrigger className="cursor-pointer">
-                        {level.label}
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuSubContent className="bg-popover">
-                        {level.branches.map((branch) => (
-                          <DropdownMenuItem key={branch.href} asChild>
-                            <Link to={branch.href}>{branch.label}</Link>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuSubContent>
-                    </DropdownMenuSub>
-                  ) : (
-                    <DropdownMenuItem key={level.href} asChild>
-                      <Link to={level.href!}>{level.label}</Link>
-                    </DropdownMenuItem>
-                  )
+                {levels.map((level) => (
+                  <DropdownMenuItem key={level.href} asChild>
+                    <Link to={level.href}>{level.label}</Link>
+                  </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
@@ -129,34 +95,15 @@ const Header = () => {
             ))}
             <div className="border-t border-border/50 pt-4 mt-4">
               <p className="text-sm font-semibold text-foreground mb-3 px-4">المستويات الدراسية</p>
-              {levels.map((level, index) => (
-                <div key={index} className="mb-2">
-                  {level.branches ? (
-                    <>
-                      <p className="px-4 py-2 text-sm font-medium text-foreground">{level.label}</p>
-                      <div className="pr-8 space-y-1">
-                        {level.branches.map((branch) => (
-                          <Link
-                            key={branch.href}
-                            to={branch.href}
-                            onClick={() => setIsOpen(false)}
-                            className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            {branch.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <Link
-                      to={level.href!}
-                      onClick={() => setIsOpen(false)}
-                      className="block px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {level.label}
-                    </Link>
-                  )}
-                </div>
+              {levels.map((level) => (
+                <Link
+                  key={level.href}
+                  to={level.href}
+                  onClick={() => setIsOpen(false)}
+                  className="block px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {level.label}
+                </Link>
               ))}
             </div>
           </div>
