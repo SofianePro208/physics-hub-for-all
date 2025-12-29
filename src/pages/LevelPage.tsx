@@ -4,8 +4,10 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SharePrintButtons from "@/components/SharePrintButtons";
 import ContentCard from "@/components/ContentCard";
+import SEOHead from "@/components/SEOHead";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, Video, ChevronRight, GraduationCap } from "lucide-react";
+import { BookOpen, FileText, Video, GraduationCap } from "lucide-react";
 
 const levelData: Record<string, { title: string; year: string; branch: string; description: string }> = {
   "1as": {
@@ -157,28 +159,29 @@ const LevelPage = () => {
     .filter(([id]) => id.startsWith(currentYear || "") && id !== levelId)
     .map(([id, data]) => ({ id, ...data }));
 
+  const breadcrumbItems = [
+    { label: level.year, href: "/" },
+    { label: level.branch || level.title },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={level.title}
+        description={`${level.description}. دروس، امتحانات، وفيديوهات تعليمية في الفيزياء والكيمياء.`}
+        keywords={`${level.title}, فيزياء, كيمياء, دروس, امتحانات, ${level.branch}, الجزائر`}
+      />
       <Header />
       
       <main className="pt-24 lg:pt-28">
         {/* Hero Section */}
         <section className="gradient-hero py-16 lg:py-24">
           <div className="container mx-auto px-4">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-primary-foreground/70 mb-8 animate-fade-in">
-              <Link to="/" className="hover:text-primary-foreground transition-colors">
-                الرئيسية
-              </Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-primary-foreground">{level.year}</span>
-              {level.branch && (
-                <>
-                  <ChevronRight className="w-4 h-4" />
-                  <span className="text-primary-foreground">{level.branch}</span>
-                </>
-              )}
-            </nav>
+            <PageBreadcrumb 
+              items={breadcrumbItems} 
+              className="mb-8"
+              variant="light"
+            />
 
             <div className="max-w-3xl animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="flex items-start justify-between gap-4 mb-6">

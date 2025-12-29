@@ -6,10 +6,16 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import SEOHead from "@/components/SEOHead";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="الرئيسية"
+        description="منصة تعليمية متخصصة في العلوم الفيزيائية للتعليم الثانوي الجزائري. دروس، امتحانات، وفيديوهات تعليمية لجميع المستويات."
+        keywords="فيزياء, كيمياء, دروس, امتحانات, بكالوريا, ثانوي, الجزائر, تعليم, علوم"
+      />
       <Header />
       <main>
         <Hero />

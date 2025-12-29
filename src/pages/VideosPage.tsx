@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ContentByLevel from "@/components/ContentByLevel";
+import SEOHead from "@/components/SEOHead";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { Video } from "lucide-react";
 
 const allVideos = [
@@ -21,12 +23,22 @@ const allVideos = [
 const VideosPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="الفيديوهات التعليمية"
+        description="فيديوهات تعليمية لشرح دروس الفيزياء والكيمياء. شروحات مرئية مبسطة لجميع المستويات الدراسية."
+        keywords="فيديوهات فيزياء, شرح دروس, تعليم مرئي, يوتيوب فيزياء, الجزائر"
+      />
       <Header />
       
       <main className="pt-24 lg:pt-28">
         {/* Hero Section */}
         <section className="gradient-hero py-16 lg:py-24">
           <div className="container mx-auto px-4">
+            <PageBreadcrumb 
+              items={[{ label: "الفيديوهات" }]} 
+              className="mb-8"
+              variant="light"
+            />
             <div className="max-w-3xl animate-fade-in">
               <div className="w-16 h-16 rounded-2xl bg-primary-foreground/10 flex items-center justify-center mb-6">
                 <Video className="w-8 h-8 text-primary-foreground" />
