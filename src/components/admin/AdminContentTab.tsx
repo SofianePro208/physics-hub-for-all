@@ -13,10 +13,20 @@ interface AdminContentTabProps {
 
 const levelLabels: Record<string, string> = {
   "1as": "السنة الأولى ثانوي",
-  "2as-se": "السنة الثانية - علوم تجريبية",
-  "2as-mt": "السنة الثانية - رياضيات",
-  "3as-se": "السنة الثالثة - علوم تجريبية",
-  "3as-mt": "السنة الثالثة - رياضيات",
+  "2as": "السنة الثانية ثانوي",
+  "3as": "السنة الثالثة ثانوي",
+};
+
+const trimesterLabels: Record<number, string> = {
+  1: "الفصل الأول",
+  2: "الفصل الثاني",
+  3: "الفصل الثالث",
+};
+
+const examTypeLabels: Record<string, string> = {
+  "assignment": "فرض",
+  "test": "اختبار",
+  "exercises": "سلسلة تمارين",
 };
 
 const AdminContentTab = ({ type, onEdit }: AdminContentTabProps) => {
@@ -107,7 +117,17 @@ const AdminContentTab = ({ type, onEdit }: AdminContentTabProps) => {
                   {item.description && (
                     <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{item.description}</p>
                   )}
-                  <Badge variant="outline">{levelLabels[item.level_id] || item.level_id}</Badge>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline">{levelLabels[item.level_id] || item.level_id}</Badge>
+                    {type === "exam" && item.trimester && (
+                      <Badge variant="secondary">{trimesterLabels[item.trimester]}</Badge>
+                    )}
+                    {type === "exam" && item.exam_type && (
+                      <Badge className="bg-physics-gold/10 text-physics-gold border-physics-gold/20">
+                        {examTypeLabels[item.exam_type] || item.exam_type}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
 
