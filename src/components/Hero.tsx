@@ -68,7 +68,7 @@ const Hero = () => {
               <Button 
                 variant="ghost" 
                 size="xl" 
-                className="relative gap-3 text-lg text-primary-foreground border-2 border-primary-foreground/30 bg-transparent hover:bg-primary-foreground/15 hover:border-physics-cyan backdrop-blur-md overflow-hidden transition-all duration-500 hover:scale-105"
+                className="relative gap-3 text-lg !text-white border-2 border-white/30 bg-transparent hover:bg-white/15 hover:border-physics-cyan backdrop-blur-md overflow-hidden transition-all duration-500 hover:scale-105"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-physics-cyan/0 via-physics-cyan/20 to-physics-cyan/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                 <FileText className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
