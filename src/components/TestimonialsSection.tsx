@@ -105,8 +105,8 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Testimonials Marquee */}
-        <div className="relative overflow-hidden">
-          <div className="flex gap-6 animate-marquee hover:[animation-play-state:paused]">
+        <div className="relative overflow-hidden w-full">
+          <div className="flex gap-6 animate-marquee hover:[animation-play-state:paused] w-max">
             {duplicatedTestimonials.map((testimonial, index) => (
               <div
                 key={index}
