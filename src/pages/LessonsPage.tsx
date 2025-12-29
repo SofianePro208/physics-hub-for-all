@@ -1,15 +1,20 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ContentCard from "@/components/ContentCard";
+import ContentByLevel from "@/components/ContentByLevel";
 import { BookOpen } from "lucide-react";
 
 const allLessons = [
   { id: 1, title: "الحركة والسكون", description: "دراسة المرجع والمعلم في الفيزياء", level: "السنة الأولى ثانوي", levelId: "1as-st" },
   { id: 2, title: "السرعة المتوسطة واللحظية", description: "حساب السرعة في الحركات المختلفة", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 3, title: "القوى والتوازن", description: "شروط توازن جسم صلب", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 4, title: "الطاقة الحركية والكامنة", description: "أشكال الطاقة وتحولاتها", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 5, title: "الظواهر الكهربائية", description: "الدارات الكهربائية والقوانين الأساسية", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 6, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
+  { id: 3, title: "القوة والحركة", description: "العلاقة بين القوة والتسارع", level: "السنة الأولى ثانوي", levelId: "1as-st" },
+  { id: 4, title: "القوى والتوازن", description: "شروط توازن جسم صلب خاضع لقوتين", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
+  { id: 5, title: "العمل والطاقة", description: "العمل الميكانيكي والطاقة الحركية", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
+  { id: 6, title: "الطاقة الحركية والكامنة", description: "أشكال الطاقة وتحولاتها", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
+  { id: 7, title: "كمية الحركة", description: "انحفاظ كمية الحركة والتصادمات", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
+  { id: 8, title: "الظواهر الكهربائية", description: "الدارات الكهربائية والقوانين الأساسية", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
+  { id: 9, title: "تطور جملة كيميائية", description: "التحولات الكيميائية والتقدم", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
+  { id: 10, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
+  { id: 11, title: "الموجات الكهرومغناطيسية", description: "الضوء والظواهر الموجية", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
 ];
 
 const LessonsPage = () => {
@@ -29,7 +34,7 @@ const LessonsPage = () => {
                 الدروس
               </h1>
               <p className="text-xl text-primary-foreground/80">
-                جميع دروس الفيزياء لكل المستويات والشعب
+                جميع دروس الفيزياء والكيمياء مرتبة حسب المستوى الدراسي
               </p>
             </div>
           </div>
@@ -38,19 +43,7 @@ const LessonsPage = () => {
         {/* Content Section */}
         <section className="py-12 lg:py-20">
           <div className="container mx-auto px-4">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {allLessons.map((item, index) => (
-                <ContentCard
-                  key={item.id}
-                  type="lesson"
-                  title={item.title}
-                  description={item.description}
-                  level={item.level}
-                  href={`/level/${item.levelId}/lesson/${item.id}`}
-                  delay={index * 0.1}
-                />
-              ))}
-            </div>
+            <ContentByLevel items={allLessons} type="lesson" />
           </div>
         </section>
       </main>
