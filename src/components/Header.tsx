@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Atom, Menu, X, BookOpen, FileText, Video, Home, ChevronDown } from "lucide-react";
+import { Atom, Menu, X, BookOpen, FileText, Video, Home, ChevronDown, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import SearchDialog from "@/components/SearchDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,7 @@ const navLinks = [
   { label: "الدروس", href: "/lessons", icon: BookOpen },
   { label: "الامتحانات", href: "/exams", icon: FileText },
   { label: "الفيديوهات", href: "/videos", icon: Video },
+  { label: "اتصل بنا", href: "/contact", icon: Mail },
 ];
 
 const levels = [
@@ -106,10 +108,12 @@ const Header = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <SearchDialog />
             <ThemeToggle />
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
+            <SearchDialog />
             <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

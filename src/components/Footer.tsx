@@ -51,6 +51,7 @@ const Footer = () => {
                 { label: "الدروس", href: "/lessons" },
                 { label: "الامتحانات", href: "/exams" },
                 { label: "الفيديوهات", href: "/videos" },
+                { label: "اتصل بنا", href: "/contact" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
