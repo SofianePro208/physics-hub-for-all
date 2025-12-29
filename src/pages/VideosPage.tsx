@@ -55,13 +55,12 @@ const VideosPage = () => {
 
   function getLevelName(levelId: string): string {
     const levelNames: Record<string, string> = {
+      "1as": "السنة الأولى ثانوي",
       "1as-st": "السنة الأولى ثانوي",
       "2as-se": "السنة الثانية - علوم تجريبية",
-      "2as-mt": "السنة الثانية - رياضيات",
-      "2as-tm": "السنة الثانية - تقني رياضي",
+      "2as-mt": "السنة الثانية - رياضيات وتقني رياضي",
       "3as-se": "السنة الثالثة - علوم تجريبية",
-      "3as-mt": "السنة الثالثة - رياضيات",
-      "3as-tm": "السنة الثالثة - تقني رياضي",
+      "3as-mt": "السنة الثالثة - رياضيات وتقني رياضي",
     };
     return levelNames[levelId] || levelId;
   }

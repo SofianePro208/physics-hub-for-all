@@ -50,10 +50,11 @@ const typeConfig = {
 const getLevelName = (levelId: string): string => {
   const levels: Record<string, string> = {
     "1as": "السنة الأولى ثانوي",
+    "1as-st": "السنة الأولى ثانوي",
     "2as-se": "السنة الثانية - علوم تجريبية",
-    "2as-mt": "السنة الثانية - رياضيات وتقني",
+    "2as-mt": "السنة الثانية - رياضيات وتقني رياضي",
     "3as-se": "السنة الثالثة - علوم تجريبية",
-    "3as-mt": "السنة الثالثة - رياضيات وتقني",
+    "3as-mt": "السنة الثالثة - رياضيات وتقني رياضي",
   };
   return levels[levelId] || levelId;
 };
