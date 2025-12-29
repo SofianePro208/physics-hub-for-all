@@ -1,26 +1,71 @@
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ContentByLevel from "@/components/ContentByLevel";
 import SEOHead from "@/components/SEOHead";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import ContentSkeleton from "@/components/ContentSkeleton";
 import { Video } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const allVideos = [
-  { id: 1, title: "شرح الحركة المستقيمة", description: "فيديو تعليمي مفصل عن الحركة", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 2, title: "تجربة سقوط الأجسام", description: "تجربة عملية مع الشرح", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 3, title: "شرح قوانين نيوتن", description: "القوانين الثلاث للميكانيك", level: "السنة الأولى ثانوي", levelId: "1as-st" },
-  { id: 4, title: "حل تمارين التوازن", description: "تمارين محلولة عن التوازن", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 5, title: "شرح العمل والطاقة", description: "مفهوم الشغل والطاقة الحركية", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se" },
-  { id: 6, title: "حل تمارين الميكانيك", description: "حل تطبيقي لتمارين متنوعة", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 7, title: "شرح كمية الحركة", description: "انحفاظ كمية الحركة", level: "السنة الثانية - رياضيات", levelId: "2as-mt" },
-  { id: 8, title: "شرح الظواهر الكهربائية", description: "الدارات الكهربائية بالتفصيل", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 9, title: "شرح التفاعلات الكيميائية", description: "تطور جملة كيميائية", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se" },
-  { id: 10, title: "تصحيح بكالوريا 2023", description: "حل موضوع بكالوريا كامل", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-  { id: 11, title: "شرح الموجات الميكانيكية", description: "انتشار الموجات وخصائصها", level: "السنة الثالثة - رياضيات", levelId: "3as-mt" },
-];
+interface VideoItem {
+  id: string;
+  title: string;
+  description: string | null;
+  level_id: string;
+}
 
 const VideosPage = () => {
+  const [videos, setVideos] = useState<VideoItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("videos")
+          .select("id, title, description, level_id")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching videos:", error);
+          return;
+        }
+
+        setVideos(data || []);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  // Transform data for ContentByLevel component
+  const formattedVideos = videos.map((video) => ({
+    id: video.id,
+    title: video.title,
+    description: video.description || "",
+    level: getLevelName(video.level_id),
+    levelId: video.level_id,
+  }));
+
+  function getLevelName(levelId: string): string {
+    const levelNames: Record<string, string> = {
+      "1as-st": "السنة الأولى ثانوي",
+      "2as-se": "السنة الثانية - علوم تجريبية",
+      "2as-mt": "السنة الثانية - رياضيات",
+      "2as-tm": "السنة الثانية - تقني رياضي",
+      "3as-se": "السنة الثالثة - علوم تجريبية",
+      "3as-mt": "السنة الثالثة - رياضيات",
+      "3as-tm": "السنة الثالثة - تقني رياضي",
+    };
+    return levelNames[levelId] || levelId;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -56,7 +101,17 @@ const VideosPage = () => {
         {/* Content Section */}
         <section className="py-12 lg:py-20">
           <div className="container mx-auto px-4">
-            <ContentByLevel items={allVideos} type="video" />
+            {isLoading ? (
+              <ContentSkeleton type="card" count={6} />
+            ) : formattedVideos.length > 0 ? (
+              <ContentByLevel items={formattedVideos} type="video" />
+            ) : (
+              <div className="text-center py-16">
+                <Video className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">لا توجد فيديوهات حالياً</h3>
+                <p className="text-muted-foreground">سيتم إضافة الفيديوهات قريباً</p>
+              </div>
+            )}
           </div>
         </section>
       </main>

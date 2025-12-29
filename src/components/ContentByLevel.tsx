@@ -3,7 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { GraduationCap } from "lucide-react";
 
 interface ContentItem {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   level: string;
