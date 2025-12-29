@@ -81,8 +81,11 @@ const Hero = () => {
               { icon: FileText, value: "+100", label: "امتحان" },
               { icon: Video, value: "+50", label: "فيديو تعليمي" },
             ].map((stat, index) => (
-              <div key={index} className="text-center p-4 rounded-2xl bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10">
-                <stat.icon className="w-6 h-6 mx-auto mb-2 text-physics-gold" />
+              <div 
+                key={index} 
+                className="group text-center p-4 rounded-2xl bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10 hover:bg-primary-foreground/10 hover:border-primary-foreground/20 transition-all duration-300 hover:-translate-y-1"
+              >
+                <stat.icon className="w-6 h-6 mx-auto mb-2 text-physics-gold group-hover:scale-110 transition-transform" />
                 <div className="text-2xl sm:text-3xl font-bold text-primary-foreground">{stat.value}</div>
                 <div className="text-xs sm:text-sm text-primary-foreground/70">{stat.label}</div>
               </div>
