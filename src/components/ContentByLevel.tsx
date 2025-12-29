@@ -28,8 +28,7 @@ const levels = [
     subtitle: "جميع الشعب",
     branches: [
       { id: "2as-se", name: "علوم تجريبية" },
-      { id: "2as-mt", name: "رياضيات" },
-      { id: "2as-tm", name: "تقني رياضي" },
+      { id: "2as-mt", name: "رياضيات وتقني رياضي", matches: ["2as-mt", "2as-tm"] },
     ]
   },
   { 
@@ -38,8 +37,7 @@ const levels = [
     subtitle: "جميع الشعب",
     branches: [
       { id: "3as-se", name: "علوم تجريبية" },
-      { id: "3as-mt", name: "رياضيات" },
-      { id: "3as-tm", name: "تقني رياضي" },
+      { id: "3as-mt", name: "رياضيات وتقني رياضي", matches: ["3as-mt", "3as-tm"] },
     ]
   },
 ];
@@ -56,7 +54,9 @@ const ContentByLevel = ({ items, type }: ContentByLevelProps) => {
       // Group by branches
       const branchItems = level.branches.map(branch => ({
         ...branch,
-        items: items.filter((item) => item.levelId === branch.id),
+        items: items.filter((item) => 
+          branch.matches ? branch.matches.includes(item.levelId) : item.levelId === branch.id
+        ),
       }));
       const totalItems = branchItems.reduce((sum, b) => sum + b.items.length, 0);
       return { ...level, branchItems, totalItems };

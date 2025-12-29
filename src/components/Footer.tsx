@@ -82,16 +82,14 @@ const Footer = () => {
                 <span className="text-white/90 font-medium">السنة الثانية ثانوي</span>
                 <div className="pr-4 space-y-2">
                   <Link to="/level/2as-se" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">علوم تجريبية</Link>
-                  <Link to="/level/2as-mt" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">رياضيات</Link>
-                  <Link to="/level/2as-tm" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">تقني رياضي</Link>
+                  <Link to="/level/2as-mt" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">رياضيات وتقني رياضي</Link>
                 </div>
               </li>
               <li className="space-y-2">
                 <span className="text-white/90 font-medium">السنة الثالثة ثانوي</span>
                 <div className="pr-4 space-y-2">
                   <Link to="/level/3as-se" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">علوم تجريبية</Link>
-                  <Link to="/level/3as-mt" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">رياضيات</Link>
-                  <Link to="/level/3as-tm" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">تقني رياضي</Link>
+                  <Link to="/level/3as-mt" className="block text-sm text-white/60 hover:text-physics-gold transition-colors">رياضيات وتقني رياضي</Link>
                 </div>
               </li>
             </ul>
