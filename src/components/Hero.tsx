@@ -52,17 +52,27 @@ const Hero = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-5 animate-fade-in" style={{ animationDelay: "0.6s" }}>
-            <Link to="/lessons">
-              <Button variant="gold" size="xl" className="gap-3 text-lg shadow-xl hover:shadow-2xl">
-                <BookOpen className="w-6 h-6" />
-                تصفح الدروس
+          <div className="flex flex-wrap items-center justify-center gap-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <Link to="/lessons" className="group">
+              <Button 
+                variant="gold" 
+                size="xl" 
+                className="relative gap-3 text-lg shadow-xl hover:shadow-2xl overflow-hidden transition-all duration-500 hover:scale-105"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-physics-gold/0 via-white/20 to-physics-gold/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                <BookOpen className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                <span>تصفح الدروس</span>
               </Button>
             </Link>
-            <Link to="/exams">
-              <Button variant="glass" size="xl" className="gap-3 text-lg text-primary-foreground border-2 border-primary-foreground/30 hover:bg-primary-foreground/15 hover:border-primary-foreground/50 backdrop-blur-md">
-                <FileText className="w-6 h-6" />
-                الامتحانات
+            <Link to="/exams" className="group">
+              <Button 
+                variant="glass" 
+                size="xl" 
+                className="relative gap-3 text-lg text-primary-foreground border-2 border-primary-foreground/30 hover:bg-primary-foreground/15 hover:border-physics-cyan backdrop-blur-md overflow-hidden transition-all duration-500 hover:scale-105"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-physics-cyan/0 via-physics-cyan/20 to-physics-cyan/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                <FileText className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                <span>الامتحانات</span>
               </Button>
             </Link>
           </div>
