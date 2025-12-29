@@ -1,4 +1,4 @@
-import { Share2, Printer, Facebook, Twitter, Link as LinkIcon, Check } from "lucide-react";
+import { Share2, Facebook, Twitter, Link as LinkIcon, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,10 +19,6 @@ const SharePrintButtons = ({ title, description, className = "" }: SharePrintBut
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const url = typeof window !== "undefined" ? window.location.href : "";
-
-  const handlePrint = () => {
-    window.print();
-  };
 
   const handleCopyLink = async () => {
     try {
@@ -61,17 +57,6 @@ const SharePrintButtons = ({ title, description, className = "" }: SharePrintBut
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      {/* Print Button */}
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handlePrint}
-        className="gap-2 print:hidden"
-      >
-        <Printer className="w-4 h-4" />
-        <span className="hidden sm:inline">طباعة</span>
-      </Button>
-
       {/* Share Dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
