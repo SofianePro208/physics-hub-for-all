@@ -106,19 +106,19 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
                   <Mail className="w-5 h-5 text-physics-cyan" />
                 </div>
-                <span>contact@physics-edu.dz</span>
+                <span>sofiane.l.kalem@ens-lagh.dz</span>
               </li>
               <li className="flex items-center gap-3 text-white/70">
                 <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
                   <Phone className="w-5 h-5 text-physics-cyan" />
                 </div>
-                <span dir="ltr">+213 XX XX XX XX</span>
+                <span dir="ltr">+213 658 787 555</span>
               </li>
               <li className="flex items-center gap-3 text-white/70">
                 <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-physics-cyan" />
                 </div>
-                <span>الجزائر</span>
+                <span>مستغانم، الجزائر</span>
               </li>
             </ul>
           </div>
