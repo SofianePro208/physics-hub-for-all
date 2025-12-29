@@ -57,6 +57,7 @@ export default {
           gold: "hsl(var(--physics-gold))",
           light: "hsl(var(--physics-light))",
           purple: "hsl(var(--physics-purple))",
+          emerald: "hsl(var(--physics-emerald))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

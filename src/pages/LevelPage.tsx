@@ -175,18 +175,24 @@ const LevelPage = () => {
       
       <main className="pt-24 lg:pt-28">
         {/* Hero Section */}
-        <section className="gradient-hero py-16 lg:py-24">
-          <div className="container mx-auto px-4">
+        <section className="gradient-hero py-20 lg:py-28 relative overflow-hidden">
+          {/* Background decorations */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-10 right-[10%] w-64 h-64 bg-physics-cyan/15 rounded-full blur-[80px]" />
+            <div className="absolute bottom-10 left-[5%] w-80 h-80 bg-physics-gold/10 rounded-full blur-[100px]" />
+          </div>
+          
+          <div className="container mx-auto px-4 relative">
             <PageBreadcrumb 
               items={breadcrumbItems} 
-              className="mb-8"
+              className="mb-10"
               variant="light"
             />
 
             <div className="max-w-3xl animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <div className="flex items-start justify-between gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-primary-foreground/10 flex items-center justify-center">
-                  <GraduationCap className="w-8 h-8 text-primary-foreground" />
+              <div className="flex items-start justify-between gap-4 mb-8">
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-physics-cyan to-physics-blue flex items-center justify-center shadow-xl">
+                  <GraduationCap className="w-10 h-10 text-primary-foreground" />
                 </div>
                 <SharePrintButtons 
                   title={level.title} 
@@ -194,22 +200,22 @@ const LevelPage = () => {
                   className="[&_button]:border-white/20 [&_button]:text-white [&_button]:hover:bg-white/10"
                 />
               </div>
-              <h1 className="text-3xl lg:text-5xl font-bold text-primary-foreground mb-4">
+              <h1 className="text-3xl lg:text-5xl font-extrabold text-primary-foreground mb-5">
                 {level.title}
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-6">
+              <p className="text-xl text-primary-foreground/85 mb-8 leading-relaxed">
                 {level.description}
               </p>
 
               {/* Sibling Branches */}
               {siblingBranches.length > 0 && (
-                <div className="flex flex-wrap gap-3">
-                  <span className="text-primary-foreground/70 text-sm self-center">الشعب الأخرى:</span>
+                <div className="flex flex-wrap gap-3 items-center">
+                  <span className="text-primary-foreground/70 text-sm font-medium">الشعب الأخرى:</span>
                   {siblingBranches.map((branch) => (
                     <Link
                       key={branch.id}
                       to={`/level/${branch.id}`}
-                      className="px-4 py-2 rounded-lg bg-primary-foreground/10 text-primary-foreground text-sm hover:bg-primary-foreground/20 transition-colors"
+                      className="px-5 py-2.5 rounded-xl bg-primary-foreground/10 text-primary-foreground text-sm font-medium hover:bg-primary-foreground/20 transition-all duration-300 border border-primary-foreground/20 hover:border-primary-foreground/40"
                     >
                       {branch.branch}
                     </Link>
@@ -221,24 +227,24 @@ const LevelPage = () => {
         </section>
 
         {/* Content Section */}
-        <section className="py-12 lg:py-20">
+        <section className="py-14 lg:py-24">
           <div className="container mx-auto px-4">
-            <Tabs defaultValue="lessons" className="space-y-8">
-              <TabsList className="w-full max-w-md mx-auto grid grid-cols-3 h-14 p-1 bg-muted rounded-xl">
-                <TabsTrigger value="lessons" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm rounded-lg">
-                  <BookOpen className="w-4 h-4" />
+            <Tabs defaultValue="lessons" className="space-y-10">
+              <TabsList className="w-full max-w-lg mx-auto grid grid-cols-3 h-16 p-1.5 bg-muted/60 backdrop-blur-sm rounded-2xl border border-border/50">
+                <TabsTrigger value="lessons" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                  <BookOpen className="w-5 h-5" />
                   <span className="hidden sm:inline">الدروس</span>
-                  <span className="text-xs text-muted-foreground">({content.lessons.length})</span>
+                  <span className="text-xs text-muted-foreground font-bold">({content.lessons.length})</span>
                 </TabsTrigger>
-                <TabsTrigger value="exams" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm rounded-lg">
-                  <FileText className="w-4 h-4" />
+                <TabsTrigger value="exams" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                  <FileText className="w-5 h-5" />
                   <span className="hidden sm:inline">الامتحانات</span>
-                  <span className="text-xs text-muted-foreground">({content.exams.length})</span>
+                  <span className="text-xs text-muted-foreground font-bold">({content.exams.length})</span>
                 </TabsTrigger>
-                <TabsTrigger value="videos" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm rounded-lg">
-                  <Video className="w-4 h-4" />
+                <TabsTrigger value="videos" className="gap-2 data-[state=active]:bg-card data-[state=active]:shadow-md rounded-xl font-semibold transition-all duration-300">
+                  <Video className="w-5 h-5" />
                   <span className="hidden sm:inline">الفيديوهات</span>
-                  <span className="text-xs text-muted-foreground">({content.videos.length})</span>
+                  <span className="text-xs text-muted-foreground font-bold">({content.videos.length})</span>
                 </TabsTrigger>
               </TabsList>
 
