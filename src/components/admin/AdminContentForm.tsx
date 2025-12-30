@@ -100,6 +100,8 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("Form submission - type:", type, "tableName:", tableName);
 
     if (!title.trim() || !levelId) {
       toast({ title: "خطأ", description: "يرجى ملء جميع الحقول المطلوبة", variant: "destructive" });
@@ -149,6 +151,8 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
         }
       }
 
+      console.log("Saving to table:", tableName, "with data:", data);
+      
       let error;
       if (item) {
         const result = await supabase.from(tableName).update(data).eq("id", item.id);
