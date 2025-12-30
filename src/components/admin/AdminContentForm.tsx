@@ -52,7 +52,18 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
   const tableName = type === "lesson" ? "lessons" : type === "exam" ? "exams" : "videos";
 
   const uploadFile = async (file: File, folder: string): Promise<string | null> => {
-    const fileName = `${folder}/${Date.now()}-${file.name}`;
+    // Check file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast({ 
+        title: "خطأ", 
+        description: "حجم الملف كبير جداً. الحد الأقصى 10 ميجابايت", 
+        variant: "destructive" 
+      });
+      return null;
+    }
+
+    const fileName = `${folder}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
     
     const { error } = await supabase.storage.from("content").upload(fileName, file, {
       cacheControl: "3600",
@@ -61,6 +72,25 @@ const AdminContentForm = ({ type, item, onClose, onSuccess }: AdminContentFormPr
 
     if (error) {
       console.error("Upload error:", error);
+      if (error.message.includes("not authenticated")) {
+        toast({ 
+          title: "خطأ في المصادقة", 
+          description: "يرجى تسجيل الدخول مرة أخرى", 
+          variant: "destructive" 
+        });
+      } else if (error.message.includes("policy")) {
+        toast({ 
+          title: "خطأ في الصلاحيات", 
+          description: "ليس لديك صلاحية لرفع الملفات", 
+          variant: "destructive" 
+        });
+      } else {
+        toast({ 
+          title: "خطأ في الرفع", 
+          description: error.message, 
+          variant: "destructive" 
+        });
+      }
       return null;
     }
 
