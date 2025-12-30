@@ -133,7 +133,14 @@ const AdminDashboard = () => {
 
             {activeTab !== "messages" && (
               <Button 
-                onClick={() => openAddForm(activeTab as "lesson" | "exam" | "video")}
+                onClick={() => {
+                  const typeMap: Record<string, "lesson" | "exam" | "video"> = {
+                    lessons: "lesson",
+                    exams: "exam",
+                    videos: "video"
+                  };
+                  openAddForm(typeMap[activeTab]);
+                }}
                 className="gap-2"
               >
                 <Plus className="w-4 h-4" />
