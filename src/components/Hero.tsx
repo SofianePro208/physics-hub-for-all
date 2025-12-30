@@ -42,8 +42,8 @@ const Hero = () => {
 
           {/* Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-primary-foreground mb-8 leading-tight animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            العلوم الفيزيائية
-            <span className="block mt-3 bg-gradient-to-l from-physics-cyan via-physics-gold to-physics-cyan bg-clip-text text-transparent">للتعليم الثانوي</span>
+            Prof Sofiane
+            <span className="block mt-3 bg-gradient-to-l from-physics-cyan via-physics-gold to-physics-cyan bg-clip-text text-transparent">Physics Academy</span>
           </h1>
 
           {/* Subtitle */}
