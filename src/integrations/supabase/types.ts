@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      bac_exams: {
+        Row: {
+          branch: string
+          created_at: string
+          description: string | null
+          id: string
+          pdf_url: string | null
+          solution_pdf_url: string | null
+          title: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          branch: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          pdf_url?: string | null
+          solution_pdf_url?: string | null
+          title: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          branch?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          pdf_url?: string | null
+          solution_pdf_url?: string | null
+          title?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
