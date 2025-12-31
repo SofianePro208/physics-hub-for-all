@@ -11,7 +11,7 @@ import ContentSkeleton from "@/components/ContentSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, GraduationCap, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-
+import BacExamsSection from "@/components/BacExamsSection";
 const levelData: Record<string, { title: string; description: string; matches: string[] }> = {
   "1as": {
     title: "السنة الأولى ثانوي",
@@ -272,6 +272,9 @@ const LevelPage = () => {
             )}
           </div>
         </section>
+
+        {/* Bac Exams Section - Only for 3AS */}
+        {levelId === "3as" && <BacExamsSection />}
       </main>
 
       <Footer />
