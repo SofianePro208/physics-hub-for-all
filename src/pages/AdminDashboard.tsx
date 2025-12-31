@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import SEOHead from "@/components/SEOHead";
-import { Atom, LogOut, BookOpen, FileText, Video, MessageSquare, Plus } from "lucide-react";
+import { Atom, LogOut, BookOpen, FileText, Video, MessageSquare, Plus, Award } from "lucide-react";
 import ContentSkeleton from "@/components/ContentSkeleton";
 import AdminMessagesTab from "@/components/admin/AdminMessagesTab";
 import AdminContentTab from "@/components/admin/AdminContentTab";
 import AdminContentForm from "@/components/admin/AdminContentForm";
+import AdminBacTab from "@/components/admin/AdminBacTab";
+import AdminBacForm from "@/components/admin/AdminBacForm";
 import AdminStatsCards from "@/components/admin/AdminStatsCards";
 
 const AdminDashboard = () => {
@@ -21,8 +23,10 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("messages");
   const [showForm, setShowForm] = useState(false);
+  const [showBacForm, setShowBacForm] = useState(false);
   const [formType, setFormType] = useState<"lesson" | "exam" | "video">("lesson");
   const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingBacItem, setEditingBacItem] = useState<any>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -71,6 +75,21 @@ const AdminDashboard = () => {
     setEditingItem(null);
   };
 
+  const openAddBacForm = () => {
+    setEditingBacItem(null);
+    setShowBacForm(true);
+  };
+
+  const openEditBacForm = (item: any) => {
+    setEditingBacItem(item);
+    setShowBacForm(true);
+  };
+
+  const closeBacForm = () => {
+    setShowBacForm(false);
+    setEditingBacItem(null);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background p-8">
@@ -112,7 +131,7 @@ const AdminDashboard = () => {
         <AdminStatsCards />
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <TabsList className="grid grid-cols-4 h-12">
+            <TabsList className="grid grid-cols-5 h-12">
               <TabsTrigger value="messages" className="gap-2">
                 <MessageSquare className="w-4 h-4" />
                 <span className="hidden sm:inline">الرسائل</span>
@@ -129,22 +148,30 @@ const AdminDashboard = () => {
                 <Video className="w-4 h-4" />
                 <span className="hidden sm:inline">الفيديوهات</span>
               </TabsTrigger>
+              <TabsTrigger value="bac" className="gap-2">
+                <Award className="w-4 h-4" />
+                <span className="hidden sm:inline">البكالوريا</span>
+              </TabsTrigger>
             </TabsList>
 
             {activeTab !== "messages" && (
               <Button 
                 onClick={() => {
-                  const typeMap: Record<string, "lesson" | "exam" | "video"> = {
-                    lessons: "lesson",
-                    exams: "exam",
-                    videos: "video"
-                  };
-                  openAddForm(typeMap[activeTab]);
+                  if (activeTab === "bac") {
+                    openAddBacForm();
+                  } else {
+                    const typeMap: Record<string, "lesson" | "exam" | "video"> = {
+                      lessons: "lesson",
+                      exams: "exam",
+                      videos: "video"
+                    };
+                    openAddForm(typeMap[activeTab]);
+                  }
                 }}
                 className="gap-2"
               >
                 <Plus className="w-4 h-4" />
-                إضافة {activeTab === "lessons" ? "درس" : activeTab === "exams" ? "امتحان" : "فيديو"}
+                إضافة {activeTab === "lessons" ? "درس" : activeTab === "exams" ? "امتحان" : activeTab === "videos" ? "فيديو" : "موضوع بكالوريا"}
               </Button>
             )}
           </div>
@@ -164,6 +191,10 @@ const AdminDashboard = () => {
           <TabsContent value="videos">
             <AdminContentTab type="video" onEdit={(item) => openEditForm("video", item)} />
           </TabsContent>
+
+          <TabsContent value="bac">
+            <AdminBacTab onEdit={openEditBacForm} />
+          </TabsContent>
         </Tabs>
       </main>
 
@@ -176,6 +207,18 @@ const AdminDashboard = () => {
           onSuccess={() => {
             closeForm();
             toast({ title: editingItem ? "تم التحديث بنجاح" : "تمت الإضافة بنجاح" });
+          }}
+        />
+      )}
+
+      {/* Bac Form Dialog */}
+      {showBacForm && (
+        <AdminBacForm
+          item={editingBacItem}
+          onClose={closeBacForm}
+          onSuccess={() => {
+            closeBacForm();
+            toast({ title: editingBacItem ? "تم التحديث بنجاح" : "تمت الإضافة بنجاح" });
           }}
         />
       )}
