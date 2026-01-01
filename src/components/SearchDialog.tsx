@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, BookOpen, FileText, Video, X } from "lucide-react";
+import { Search, BookOpen, FileText, Video, X, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Dialog,
@@ -11,53 +11,105 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useLessons, useExams, useVideos } from "@/hooks/useContentQueries";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ContentItem {
-  id: number;
+  id: string;
   title: string;
-  description: string;
+  description: string | null;
   level: string;
   levelId: string;
-  type: "lesson" | "exam" | "video";
+  type: "lesson" | "exam" | "video" | "bac";
 }
-
-const allContent: ContentItem[] = [
-  // الدروس
-  { id: 1, title: "الحركة والسكون", description: "دراسة المرجع والمعلم في الفيزياء", level: "السنة الأولى ثانوي", levelId: "1as", type: "lesson" },
-  { id: 2, title: "السرعة المتوسطة واللحظية", description: "حساب السرعة في الحركات المختلفة", level: "السنة الأولى ثانوي", levelId: "1as", type: "lesson" },
-  { id: 3, title: "القوة والحركة", description: "العلاقة بين القوة والتسارع", level: "السنة الأولى ثانوي", levelId: "1as", type: "lesson" },
-  { id: 4, title: "القوى والتوازن", description: "شروط توازن جسم صلب", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se", type: "lesson" },
-  { id: 5, title: "العمل والطاقة", description: "العمل الميكانيكي والطاقة الحركية", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se", type: "lesson" },
-  { id: 6, title: "الطاقة الحركية والكامنة", description: "أشكال الطاقة وتحولاتها", level: "السنة الثانية - رياضيات", levelId: "2as-mt", type: "lesson" },
-  { id: 7, title: "كمية الحركة", description: "انحفاظ كمية الحركة والتصادمات", level: "السنة الثانية - رياضيات", levelId: "2as-mt", type: "lesson" },
-  { id: 8, title: "الظواهر الكهربائية", description: "الدارات الكهربائية والقوانين الأساسية", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se", type: "lesson" },
-  { id: 9, title: "تطور جملة كيميائية", description: "التحولات الكيميائية والتقدم", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se", type: "lesson" },
-  { id: 10, title: "الموجات الميكانيكية", description: "انتشار الموجات وخصائصها", level: "السنة الثالثة - رياضيات", levelId: "3as-mt", type: "lesson" },
-  { id: 11, title: "الموجات الكهرومغناطيسية", description: "الضوء والظواهر الموجية", level: "السنة الثالثة - رياضيات", levelId: "3as-mt", type: "lesson" },
-  // الامتحانات
-  { id: 101, title: "فرض الفصل الأول - 1 ثانوي", description: "امتحان شامل للفصل الأول", level: "السنة الأولى ثانوي", levelId: "1as", type: "exam" },
-  { id: 102, title: "اختبار الفصل الأول - 1 ثانوي", description: "الاختبار الفصلي مع الحل", level: "السنة الأولى ثانوي", levelId: "1as", type: "exam" },
-  { id: 103, title: "بكالوريا 2023 - علوم تجريبية", description: "موضوع بكالوريا 2023 مع الحل", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se", type: "exam" },
-  { id: 104, title: "بكالوريا 2022 - رياضيات", description: "موضوع بكالوريا 2022 مع الحل", level: "السنة الثالثة - رياضيات", levelId: "3as-mt", type: "exam" },
-  { id: 105, title: "بكالوريا 2023 - رياضيات", description: "موضوع بكالوريا 2023 مع الحل", level: "السنة الثالثة - رياضيات", levelId: "3as-mt", type: "exam" },
-  // الفيديوهات
-  { id: 201, title: "شرح الحركة المستقيمة", description: "فيديو تعليمي مفصل عن الحركة", level: "السنة الأولى ثانوي", levelId: "1as", type: "video" },
-  { id: 202, title: "تجربة سقوط الأجسام", description: "تجربة عملية مع الشرح", level: "السنة الأولى ثانوي", levelId: "1as", type: "video" },
-  { id: 203, title: "حل تمارين التوازن", description: "تمارين محلولة عن التوازن", level: "السنة الثانية - علوم تجريبية", levelId: "2as-se", type: "video" },
-  { id: 204, title: "شرح الظواهر الكهربائية", description: "الدارات الكهربائية بالتفصيل", level: "السنة الثالثة - علوم تجريبية", levelId: "3as-se", type: "video" },
-  { id: 205, title: "تصحيح بكالوريا 2023", description: "حل موضوع بكالوريا كامل", level: "السنة الثالثة - رياضيات", levelId: "3as-mt", type: "video" },
-];
 
 const typeConfig = {
   lesson: { icon: BookOpen, label: "درس", color: "bg-physics-blue/10 text-physics-blue" },
   exam: { icon: FileText, label: "امتحان", color: "bg-physics-gold/10 text-physics-gold" },
   video: { icon: Video, label: "فيديو", color: "bg-physics-purple/10 text-physics-purple" },
+  bac: { icon: Award, label: "بكالوريا", color: "bg-green-500/10 text-green-500" },
+};
+
+const getLevelName = (levelId: string): string => {
+  const levels: Record<string, string> = {
+    "1as": "السنة الأولى ثانوي",
+    "1as-st": "السنة الأولى ثانوي",
+    "2as-se": "السنة الثانية - علوم تجريبية",
+    "2as-mt": "السنة الثانية - رياضيات وتقني رياضي",
+    "3as-se": "السنة الثالثة - علوم تجريبية",
+    "3as-mt": "السنة الثالثة - رياضيات وتقني رياضي",
+  };
+  return levels[levelId] || levelId;
+};
+
+const useBacExams = () => {
+  return useQuery({
+    queryKey: ["bac_exams"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bac_exams")
+        .select("id, title, description, year, branch")
+        .order("year", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+  });
 };
 
 const SearchDialog = () => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<"all" | "lesson" | "exam" | "video">("all");
+  const [filter, setFilter] = useState<"all" | "lesson" | "exam" | "video" | "bac">("all");
+
+  // Fetch data from database
+  const { data: lessons = [] } = useLessons();
+  const { data: exams = [] } = useExams();
+  const { data: videos = [] } = useVideos();
+  const { data: bacExams = [] } = useBacExams();
+
+  // Transform data to unified format
+  const allContent = useMemo((): ContentItem[] => {
+    const lessonsItems: ContentItem[] = lessons.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      level: getLevelName(item.level_id),
+      levelId: item.level_id,
+      type: "lesson" as const,
+    }));
+
+    const examsItems: ContentItem[] = exams.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      level: getLevelName(item.level_id),
+      levelId: item.level_id,
+      type: "exam" as const,
+    }));
+
+    const videosItems: ContentItem[] = videos.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      level: getLevelName(item.level_id),
+      levelId: item.level_id,
+      type: "video" as const,
+    }));
+
+    const bacItems: ContentItem[] = bacExams.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description || `بكالوريا ${item.year}`,
+      level: item.branch === "se" ? "علوم تجريبية" : "رياضيات وتقني رياضي",
+      levelId: item.branch === "se" ? "3as-se" : "3as-mt",
+      type: "bac" as const,
+    }));
+
+    return [...lessonsItems, ...examsItems, ...videosItems, ...bacItems];
+  }, [lessons, exams, videos, bacExams]);
 
   const filteredResults = useMemo(() => {
     if (!query.trim()) return [];
@@ -65,15 +117,18 @@ const SearchDialog = () => {
     return allContent.filter((item) => {
       const matchesQuery = 
         item.title.includes(query) || 
-        item.description.includes(query) ||
+        (item.description && item.description.includes(query)) ||
         item.level.includes(query);
       const matchesFilter = filter === "all" || item.type === filter;
       return matchesQuery && matchesFilter;
     });
-  }, [query, filter]);
+  }, [query, filter, allContent]);
 
   const getItemLink = (item: ContentItem) => {
-    return `/level/${item.levelId}`;
+    if (item.type === "bac") {
+      return `/content/bac/${item.id}`;
+    }
+    return `/content/${item.type}/${item.id}`;
   };
 
   return (
@@ -92,7 +147,7 @@ const SearchDialog = () => {
           <div className="relative">
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
-              placeholder="ابحث عن درس، امتحان، أو فيديو..."
+              placeholder="ابحث عن درس، امتحان، فيديو، أو بكالوريا..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="pr-10 h-12 text-lg"
@@ -142,6 +197,14 @@ const SearchDialog = () => {
               <Video className="w-3 h-3 ml-1" />
               الفيديوهات
             </Badge>
+            <Badge
+              variant={filter === "bac" ? "default" : "outline"}
+              className="cursor-pointer px-4 py-2"
+              onClick={() => setFilter("bac")}
+            >
+              <Award className="w-3 h-3 ml-1" />
+              البكالوريا
+            </Badge>
           </div>
         </div>
 
@@ -188,7 +251,7 @@ const SearchDialog = () => {
           ) : (
             <div className="text-center py-12">
               <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground">اكتب للبحث في الدروس والامتحانات والفيديوهات</p>
+              <p className="text-muted-foreground">اكتب للبحث في الدروس والامتحانات والفيديوهات والبكالوريا</p>
             </div>
           )}
         </div>

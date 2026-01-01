@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowRight, BookOpen, FileText, Video, Calendar, Download, ExternalLink, Share2 } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Video, Calendar, Download, ExternalLink, Share2, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,17 +14,19 @@ import PDFViewer from "@/components/PDFViewer";
 import RelatedContent from "@/components/RelatedContent";
 import { toast } from "@/hooks/use-toast";
 
-type ContentType = "lesson" | "exam" | "video";
+type ContentType = "lesson" | "exam" | "video" | "bac";
 
 interface ContentData {
   id: string;
   title: string;
   description: string | null;
-  level_id: string;
+  level_id?: string;
   created_at: string;
   pdf_url?: string | null;
   solution_pdf_url?: string | null;
   youtube_url?: string | null;
+  year?: number;
+  branch?: string;
 }
 
 const typeConfig = {
@@ -45,6 +47,12 @@ const typeConfig = {
     label: "فيديو",
     color: "bg-rose-500/10 text-rose-500 border-rose-500/20",
     table: "videos" as const,
+  },
+  bac: {
+    icon: Award,
+    label: "بكالوريا",
+    color: "bg-green-500/10 text-green-500 border-green-500/20",
+    table: "bac_exams" as const,
   },
 };
 
@@ -82,14 +90,21 @@ const ContentViewPage = () => {
           .from(config.table)
           .select("*")
           .eq("id", id)
-          .single();
+          .maybeSingle();
 
         if (error || !data) {
           navigate("/404");
           return;
         }
 
-        setContent(data);
+        // For bac_exams, map branch to level_id for display
+        const contentData = data as ContentData;
+        if (contentType === "bac" && "branch" in data) {
+          contentData.level_id = data.branch === "se" ? "3as-se" : "3as-mt";
+          contentData.branch = data.branch;
+        }
+
+        setContent(contentData);
       } catch (error) {
         console.error("Error fetching content:", error);
         navigate("/404");
@@ -99,7 +114,7 @@ const ContentViewPage = () => {
     };
 
     fetchContent();
-  }, [type, id, config, navigate]);
+  }, [type, id, config, navigate, contentType]);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -204,7 +219,7 @@ const ContentViewPage = () => {
                 مشاركة
               </Button>
 
-              {(contentType === "lesson" || contentType === "exam") && content.pdf_url && (
+              {(contentType === "lesson" || contentType === "exam" || contentType === "bac") && content.pdf_url && (
                 <Button asChild className="gap-2">
                   <a href={content.pdf_url} download target="_blank" rel="noopener noreferrer">
                     <Download className="w-4 h-4" />
@@ -213,7 +228,7 @@ const ContentViewPage = () => {
                 </Button>
               )}
 
-              {contentType === "exam" && content.solution_pdf_url && (
+              {(contentType === "exam" || contentType === "bac") && content.solution_pdf_url && (
                 <Button
                   variant="secondary"
                   onClick={() => setShowSolution(!showSolution)}
@@ -237,13 +252,13 @@ const ContentViewPage = () => {
           {/* Content Viewer */}
           <Card className="overflow-hidden">
             <CardContent className="p-0">
-              {/* PDF Viewer for Lessons and Exams */}
-              {(contentType === "lesson" || contentType === "exam") && (
+              {/* PDF Viewer for Lessons, Exams, and Bac */}
+              {(contentType === "lesson" || contentType === "exam" || contentType === "bac") && (
                 <>
                   {content.pdf_url && !showSolution && (
                     <PDFViewer url={content.pdf_url} title={content.title} />
                   )}
-                  {contentType === "exam" && showSolution && content.solution_pdf_url && (
+                  {(contentType === "exam" || contentType === "bac") && showSolution && content.solution_pdf_url && (
                     <PDFViewer url={content.solution_pdf_url} title={`حل - ${content.title}`} />
                   )}
                   {!content.pdf_url && !showSolution && (
@@ -278,11 +293,13 @@ const ContentViewPage = () => {
           </Card>
 
           {/* Related Content Section */}
-          <RelatedContent 
-            type={config.table} 
-            levelId={content.level_id} 
-            currentId={content.id} 
-          />
+          {contentType !== "bac" && content.level_id && (
+            <RelatedContent 
+              type={config.table as "lessons" | "exams" | "videos"} 
+              levelId={content.level_id} 
+              currentId={content.id} 
+            />
+          )}
 
           {/* More Content Link */}
           <div className="mt-8 text-center">
