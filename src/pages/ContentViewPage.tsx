@@ -304,10 +304,15 @@ const ContentViewPage = () => {
           {/* More Content Link */}
           <div className="mt-8 text-center">
             <Link
-              to={`/${contentType}s`}
+              to={contentType === "bac" ? "/bacs" : `/${contentType}s`}
               className="text-primary hover:underline inline-flex items-center gap-2"
             >
-              عرض المزيد من {config.label === "درس" ? "الدروس" : config.label === "امتحان" ? "الامتحانات" : "الفيديوهات"}
+              عرض المزيد من {
+                config.label === "درس" ? "الدروس" : 
+                config.label === "امتحان" ? "الامتحانات" : 
+                config.label === "بكالوريا" ? "مواضيع البكالوريا" :
+                "الفيديوهات"
+              }
               <ArrowRight className="w-4 h-4 rotate-180" />
             </Link>
           </div>
